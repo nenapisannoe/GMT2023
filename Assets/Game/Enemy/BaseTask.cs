@@ -24,7 +24,7 @@ namespace Game.Enemy {
 			AttackPrefab = attackPrefab;
 		}
 
-		public bool CanExecuteTask() {
+		public virtual bool CanExecuteTask() {
 			return !IsCooldown;
 		}
 

@@ -5,19 +5,18 @@ namespace Game.Enemy {
 	public class MeleeAttackTask : BaseTask {
 
 		protected override int m_Cooldown => 2;
-
-		public override ExecutorTask GetTaskExecutor() {
-			var dist = GetDistance(executor.transform.position, target.transform.position);
-			if (dist > 1d) {
-				return ExecutorTask.MoveToPosition;
+		
+		public override bool CanExecuteTask() {
+			if (!base.CanExecuteTask()) {
+				return false;
 			}
 			
-			return ExecutorTask.AttackTarget;
+			var dist = GetDistance(executor.transform.position, target.transform.position);
+			return dist < 1d;
 		}
-		
-		public override Vector3 GetMoveToPositionTaskData() {
-			//нужно двигаться прямо к цели
-			return target.transform.position;
+
+		public override ExecutorTask GetTaskExecutor() {
+			return ExecutorTask.AttackTarget;
 		}
 
 		public override Vector3 GetAttackTargetTaskData() {
