@@ -17088,7 +17088,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9989cec085184061910b381d730f5adb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 0
+  currentHealth: 0
+  attack: 0
   m_Rigidbody: {fileID: 1741478690}
+  m_Animator: {fileID: 0}
   BasicAttackPrefab: {fileID: 9118703103406231035, guid: 0cd89f24996237f41b806111f3b06798, type: 3}
 --- !u!50 &1741478690
 Rigidbody2D:

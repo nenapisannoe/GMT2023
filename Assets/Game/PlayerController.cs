@@ -45,6 +45,8 @@ namespace Game {
 		private void UnlockActions() {
 			actionsLocked = false;
 		}
+		
+
 
 		private void MakeBasicAttackComplete(AttackHandle handle) {
 			handle.OnRemoveLock -= UnlockActions;

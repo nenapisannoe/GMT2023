@@ -22,8 +22,8 @@ namespace Game {
 
 		public Vector2 CheckPosition(Vector2 mousePos, Vector2 characterPos)
 		{
-			var newPos = new Vector3(Mathf.Clamp(mousePos.x, characterPos.x - 1f, characterPos.x + 1f), Mathf.Clamp(mousePos.y, characterPos.y - 1f, characterPos.y + 1f), 0f); 
-			// проверяем позицию и корректируем в зависимости от скилла
+			var newPos = mousePos - characterPos;
+			newPos.Normalize();
 			return newPos;
 		}
 
@@ -44,7 +44,8 @@ namespace Game {
 		public void AttackCompleteTrigger() {
 			m_Collider.enabled = false;
 		}
-		
+
+
 		private void OnTriggerEnter2D(Collider2D other) {
 			var character = other.gameObject.GetComponent<PlayerController>();
 			if (character != null && !attackedTargets.Contains(character)) {
