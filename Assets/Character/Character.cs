@@ -1,7 +1,7 @@
 using Game;
 using UnityEngine;
 
-public class Character : MonoBehaviour {
+public class Character : HitableObject {
     
     protected static readonly int IsWalking = Animator.StringToHash("IsWalking");
     protected static readonly int Vertical = Animator.StringToHash("Vertical");
@@ -46,5 +46,11 @@ public class Character : MonoBehaviour {
         m_CharacterAnimator.PlayHit();
         Debug.LogWarning($"Got hit: {damage.Value}");
     }
+
+    public override void attakMe(Damage attackDamage){
+        Hit(attackDamage);
+    }
+
+
     
 }
