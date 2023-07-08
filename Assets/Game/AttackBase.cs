@@ -12,13 +12,16 @@ namespace Game {
 
 	public class Damage {
 
+		public Character Attacker;
 		public DamageType Type;
 		public float Value;
 
 	}
 	
 	public abstract class AttackBase : MonoBehaviour {
-		
+
+		public virtual bool HaveKnockback { get; }
+
 		[SerializeField] protected Animator m_Animator;
 		[SerializeField] private Collider2D m_Collider;
 		private static readonly int Play = Animator.StringToHash("Play");
@@ -27,7 +30,7 @@ namespace Game {
 		private List<HitableObject> attackedTargets = new List<HitableObject>();
 
 		public event Action OnRemoveLock = delegate {};
-		public event Action<HitableObject, Damage> OnAttackTarget = delegate {};
+		public event Action<AttackBase, HitableObject, Damage> OnAttackTarget = delegate {};
 
 		private Damage attackDamage;
 		
@@ -37,6 +40,8 @@ namespace Game {
 
 		public void InitAttack(Damage damage) {
 			attackDamage = damage;
+			//чтобы себя не жухать
+			attackedTargets.Add(damage.Attacker);
 		}
 
 		public abstract Vector2 CheckPosition(Vector2 mousePos, Vector2 characterPos);
@@ -64,7 +69,7 @@ namespace Game {
 			var target = other.gameObject.GetComponent<HitableObject>();
 			if (target != null && !attackedTargets.Contains(target)) {
 				attackedTargets.Add(target);
-				OnAttackTarget.Invoke(target, attackDamage);
+				OnAttackTarget.Invoke(this, target, attackDamage);
 			}
 		}
 		

@@ -32,12 +32,14 @@ namespace Game {
 			Instance = this;
 		}
 		
-		public AttackHandle MakeAttack(AttackBase attackPrefab, Vector2 targetPosition, Vector2 characterPosition) {
+		public AttackHandle MakeAttack(Character attacker, AttackBase attackPrefab, Vector2 targetPosition) {
 			var attack = Instantiate(attackPrefab);
 			attack.InitAttack(new Damage {
+				Attacker = attacker,
 				Type = DamageType.Physical,
 				Value = 10
 			});
+			var characterPosition = attacker.transform.position;
 			targetPosition = attack.CheckPosition(targetPosition, characterPosition);
 			attack.transform.position = new Vector2(characterPosition.x + targetPosition.x, characterPosition.y + targetPosition.y);
 			var angle = Mathf.Atan2(targetPosition.y, targetPosition.x) * Mathf.Rad2Deg;
@@ -57,9 +59,12 @@ namespace Game {
 			Destroy(attack.gameObject);
 		}
 
-		private void ApplyAttack(HitableObject target, Damage attackDamage) {
+		private void ApplyAttack(AttackBase attack, HitableObject target, Damage attackDamage) {
 			Debug.Log($"Apply attack to {target}");
 			target.attakMe(attackDamage);
+			if (attack.HaveKnockback) {
+				target.Knockback(attackDamage.Attacker.transform);
+			}
 		}
 		
 	}

@@ -9,7 +9,6 @@ public class Character : HitableObject {
     protected static readonly int Vertical = Animator.StringToHash("Vertical");
     
     [SerializeField] private CharacterAnimator m_CharacterAnimator;
-    [SerializeField] private Rigidbody2D m_Rigidbody;
     [SerializeField] private Animator m_SpriteAnimator;
     
     [SerializeField] protected float maxHealth;
@@ -24,8 +23,6 @@ public class Character : HitableObject {
         if (_hpBar != null) _hpBar.Initialize(maxHealth);
     }
 
-    protected bool actionsLocked;
-    
     protected void SetVelocity(Vector2 velocity) {
         m_Rigidbody.velocity = velocity;
         m_SpriteAnimator.SetBool(IsWalking, velocity != Vector2.zero);
@@ -38,7 +35,7 @@ public class Character : HitableObject {
             return;
         }
         actionsLocked = true;
-        var handle = AttackManager.Instance.MakeAttack(attackPrefab, target, transform.position);
+        var handle = AttackManager.Instance.MakeAttack(this, attackPrefab, target);
         handle.OnComplete += MakeBasicAttackComplete;
         handle.OnRemoveLock += UnlockActions;
     }

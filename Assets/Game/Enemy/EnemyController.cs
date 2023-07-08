@@ -27,6 +27,7 @@ namespace Game.Enemy {
 		public void Init() {
 			ApproachTask.InitTask(this, m_PlayerCharacter, null);
 			
+			/*
 			BaseTask task = new MeleeAttackTask();
 			task.InitTask(this, m_PlayerCharacter, MeleeAttackPrefab);
 			m_AvailableTasks.Add(task);
@@ -36,6 +37,7 @@ namespace Game.Enemy {
 			task = new AreaAttackTask();
 			task.InitTask(this, m_PlayerCharacter, AreaAttackPrefab);
 			m_AvailableTasks.Add(task);
+			*/
 		}
 
 		private void Update() {
@@ -58,6 +60,9 @@ namespace Game.Enemy {
 			if (ActiveTask == null) {
 				if (ApproachTask.CanExecuteTask()) {
 					RunTask(ApproachTask);
+				}
+				else {
+					SetVelocity(Vector2.zero);
 				}
 				return;
 			}
