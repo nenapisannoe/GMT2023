@@ -5,7 +5,19 @@ using UnityEngine;
 
 namespace Game {
 	
-	public class AttackBase : MonoBehaviour {
+	public enum DamageType {
+		Physical,
+		Fire
+	}
+
+	public class Damage {
+
+		public DamageType Type;
+		public float Value;
+
+	}
+	
+	public abstract class AttackBase : MonoBehaviour {
 		
 		[SerializeField] private Animator m_Animator;
 		[SerializeField] private Collider2D m_Collider;
@@ -14,22 +26,24 @@ namespace Game {
 		private List<Character> attackedTargets = new List<Character>();
 
 		public event Action OnRemoveLock = delegate {};
-		public event Action<Character> OnAttackTarget = delegate {};
+		public event Action<Character, Damage> OnAttackTarget = delegate {};
 
+		private Damage attackDamage;
+		
 		private void Awake() {
 			m_Collider.enabled = false;
 		}
 
-		public Vector2 CheckPosition(Vector2 mousePos, Vector2 characterPos)
-		{
-			var newPos = mousePos - characterPos;
-			newPos.Normalize();
-			return newPos;
+		public void InitAttack(Damage damage) {
+			attackDamage = damage;
 		}
 
-		public async UniTask Run() {
+		public abstract Vector2 CheckPosition(Vector2 mousePos, Vector2 characterPos);
+
+		public virtual async UniTask Run() {
 			var task = AnimationStateHandler.AwaitStateExitEvent(m_Animator);
 			m_Animator.SetTrigger(Play);
+			
 			await task;
 		}
 
@@ -37,20 +51,19 @@ namespace Game {
 			OnRemoveLock.Invoke();
 		}
 
-		public void AttackTrigger() {
+		public virtual void AttackTrigger() {
 			m_Collider.enabled = true;
 		}
 		
-		public void AttackCompleteTrigger() {
+		public virtual void AttackCompleteTrigger() {
 			m_Collider.enabled = false;
 		}
 
-
-		private void OnTriggerEnter2D(Collider2D other) {
+		protected virtual void OnTriggerEnter2D(Collider2D other) {
 			var character = other.gameObject.GetComponent<Character>();
 			if (character != null && !attackedTargets.Contains(character)) {
 				attackedTargets.Add(character);
-				OnAttackTarget.Invoke(character);
+				OnAttackTarget.Invoke(character, attackDamage);
 			}
 		}
 		
