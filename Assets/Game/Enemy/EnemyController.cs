@@ -12,6 +12,7 @@ namespace Game.Enemy {
 		[Header("Attacks")]
 		[SerializeField] private AttackBase MeleeAttackPrefab;
 		[SerializeField] private AttackBase RangeAttackPrefab;
+		[SerializeField] private AttackBase AreaAttackPrefab;
 
 		private List<BaseTask> m_AvailableTasks = new List<BaseTask>();
 		private BaseTask ActiveTask;
@@ -31,6 +32,9 @@ namespace Game.Enemy {
 			m_AvailableTasks.Add(task);
 			task = new RangeAttackTask();
 			task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
+			m_AvailableTasks.Add(task);
+			task = new AreaAttackTask();
+			task.InitTask(this, m_PlayerCharacter, AreaAttackPrefab);
 			m_AvailableTasks.Add(task);
 		}
 
