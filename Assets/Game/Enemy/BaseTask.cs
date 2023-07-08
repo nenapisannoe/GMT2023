@@ -3,7 +3,12 @@ using UnityEngine;
 
 namespace Game.Enemy {
 	
-	public abstract class BaseAttackTask {
+	public enum ExecutorTask {
+		MoveToPosition,
+		AttackTarget
+	}
+	
+	public abstract class BaseTask {
 		
 		private int lastUseTime;
 		protected abstract int m_Cooldown { get; }
@@ -11,10 +16,12 @@ namespace Game.Enemy {
 
 		protected Character executor;
 		protected Character target;
+		public AttackBase AttackPrefab;
 
-		public void InitTask(Character executor, Character target) {
+		public void InitTask(Character executor, Character target, AttackBase attackPrefab) {
 			this.executor = executor;
 			this.target = target;
+			AttackPrefab = attackPrefab;
 		}
 
 		public bool CanExecuteTask() {

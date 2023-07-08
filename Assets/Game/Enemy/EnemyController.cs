@@ -10,10 +10,11 @@ namespace Game.Enemy {
 		
 		[Space]
 		[Header("Attacks")]
-		[SerializeField] private AttackBase BasicAttackPrefab;
+		[SerializeField] private AttackBase MeleeAttackPrefab;
+		[SerializeField] private AttackBase RangeAttackPrefab;
 
-		private List<BaseAttackTask> m_AvailableTasks = new List<BaseAttackTask>();
-		private BaseAttackTask ActiveTask;
+		private List<BaseTask> m_AvailableTasks = new List<BaseTask>();
+		private BaseTask ActiveTask;
 		
 		private float moveSpeed = 2f;
 
@@ -22,9 +23,12 @@ namespace Game.Enemy {
 		}
 
 		public void Init() {
-			//var task = new MeleeAttackTask();
-			//task.InitTask(this, m_PlayerCharacter);
+			BaseTask task = new MeleeAttackTask();
+			//task.InitTask(this, m_PlayerCharacter, MeleeAttackPrefab);
 			//m_AvailableTasks.Add(task);
+			task = new RangeAttackTask();
+			task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
+			m_AvailableTasks.Add(task);
 		}
 
 		private void Update() {
@@ -51,7 +55,7 @@ namespace Game.Enemy {
 			RunTask(ActiveTask);
 		}
 
-		private void RunTask(BaseAttackTask task) {
+		private void RunTask(BaseTask task) {
 			var et = ActiveTask.GetTaskExecutor();
 			switch (et) {
 				case ExecutorTask.MoveToPosition:
@@ -60,7 +64,7 @@ namespace Game.Enemy {
 				
 				case ExecutorTask.AttackTarget:
 					task.RunTask();
-					RunAttackTargetTask(task.GetAttackTargetTaskData());
+					RunAttackTargetTask(task, task.GetAttackTargetTaskData());
 					task.CompleteTask();
 					ActiveTask = null;
 					break;
@@ -77,9 +81,9 @@ namespace Game.Enemy {
 			SetVelocity(vel);
 		}
 
-		private void RunAttackTargetTask(Vector3 target) {
+		private void RunAttackTargetTask(BaseTask task, Vector3 target) {
 			SetVelocity(Vector2.zero);
-			MakeBasicAttack(BasicAttackPrefab, target);
+			MakeBasicAttack(task.AttackPrefab, target);
 		}
 
 	}

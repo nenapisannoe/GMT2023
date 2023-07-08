@@ -1,14 +1,14 @@
 using UnityEngine;
 
 namespace Game.Enemy {
-
-	public class MeleeAttackTask : BaseTask {
-
+	
+	public class RangeAttackTask : BaseTask {
+		
 		protected override int m_Cooldown => 2;
 
 		public override ExecutorTask GetTaskExecutor() {
 			var dist = GetDistance(executor.transform.position, target.transform.position);
-			if (dist > 1d) {
+			if (dist > 5d) {
 				return ExecutorTask.MoveToPosition;
 			}
 			
@@ -24,7 +24,7 @@ namespace Game.Enemy {
 			//нужно атаковать прямо в сторону цели
 			return target.transform.position;
 		}
-
+		
 	}
 	
 }
