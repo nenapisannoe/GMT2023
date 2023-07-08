@@ -251,9 +251,10 @@ MonoBehaviour:
   m_CharacterAnimator: {fileID: 8776816039795106336}
   m_Rigidbody: {fileID: 2262153441904610553}
   m_SpriteAnimator: {fileID: 6328867871296183341}
-  maxHealth: 0
-  currentHealth: 0
+  maxHealth: 300
+  currentHealth: 300
   attack: 0
+  _hpBar: {fileID: 0}
   BasicAttackPrefab: {fileID: 9118703103406231035, guid: 0cd89f24996237f41b806111f3b06798, type: 3}
 --- !u!114 &8776816039795106336
 MonoBehaviour:

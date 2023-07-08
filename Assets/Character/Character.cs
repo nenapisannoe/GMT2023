@@ -1,6 +1,6 @@
 using Game;
 using UnityEngine;
-
+using Microlight.MicroBar;
 public class Character : MonoBehaviour {
     
     protected static readonly int IsWalking = Animator.StringToHash("IsWalking");
@@ -13,7 +13,14 @@ public class Character : MonoBehaviour {
     [SerializeField] protected float maxHealth;
     [SerializeField] protected float currentHealth;
     [SerializeField] protected float attack;
-    
+    [SerializeField] MicroBar _hpBar;
+
+
+    private void Start()
+    {
+        if (_hpBar != null) _hpBar.Initialize(maxHealth);
+    }
+
     protected bool actionsLocked;
     
     protected void SetVelocity(Vector2 velocity) {
@@ -45,6 +52,22 @@ public class Character : MonoBehaviour {
     public void Hit(Damage damage) {
         m_CharacterAnimator.PlayHit();
         Debug.LogWarning($"Got hit: {damage.Value}");
+
+        currentHealth -= damage.Value;
+        if (currentHealth < 0) currentHealth = 0;
+
+        if (_hpBar != null) _hpBar.UpdateHealthBar(currentHealth);
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+
     }
-    
+
+    private void Die()
+    {
+        Debug.Log($"{this} is now dead");
+    }
+
 }

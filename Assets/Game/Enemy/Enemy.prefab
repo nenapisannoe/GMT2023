@@ -220,9 +220,10 @@ MonoBehaviour:
   m_CharacterAnimator: {fileID: 3919505246402276771}
   m_Rigidbody: {fileID: 6763127397276080488}
   m_SpriteAnimator: {fileID: 730584168381687332}
-  maxHealth: 0
-  currentHealth: 0
+  maxHealth: 100
+  currentHealth: 100
   attack: 0
+  _hpBar: {fileID: 0}
   m_PlayerCharacter: {fileID: 0}
   BasicAttackPrefab: {fileID: 9118703103406231035, guid: 0cd89f24996237f41b806111f3b06798, type: 3}
 --- !u!114 &3919505246402276771

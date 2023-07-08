@@ -47,6 +47,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7340645935777427122}
     m_Modifications:
+    - target: {fileID: 3748341351107682186, guid: bfe117712d3ca8f46a6c98a90144ef1e, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3875581892530184201, guid: bfe117712d3ca8f46a6c98a90144ef1e, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -91,9 +95,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4478094821770070181, guid: bfe117712d3ca8f46a6c98a90144ef1e, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4478094821770070181, guid: bfe117712d3ca8f46a6c98a90144ef1e, type: 3}
+      propertyPath: m_Color.g
+      value: 0.07505883
+      objectReference: {fileID: 0}
+    - target: {fileID: 4478094821770070181, guid: bfe117712d3ca8f46a6c98a90144ef1e, type: 3}
+      propertyPath: m_Color.r
+      value: 0.66
+      objectReference: {fileID: 0}
     - target: {fileID: 7989895021719547052, guid: bfe117712d3ca8f46a6c98a90144ef1e, type: 3}
       propertyPath: m_Name
       value: HpBarHero
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508658889208018940, guid: bfe117712d3ca8f46a6c98a90144ef1e, type: 3}
+      propertyPath: m_Color.b
+      value: 0.4333334
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -155,6 +175,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3875581892530184201, guid: bddcbabbbcc3d1d45b03b87dd35ee2c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7183102173070832593, guid: bddcbabbbcc3d1d45b03b87dd35ee2c7, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7183102173070832593, guid: bddcbabbbcc3d1d45b03b87dd35ee2c7, type: 3}
+      propertyPath: m_Color.g
+      value: 0.07505883
+      objectReference: {fileID: 0}
+    - target: {fileID: 7183102173070832593, guid: bddcbabbbcc3d1d45b03b87dd35ee2c7, type: 3}
+      propertyPath: m_Color.r
+      value: 0.66
+      objectReference: {fileID: 0}
+    - target: {fileID: 7794129579901551244, guid: bddcbabbbcc3d1d45b03b87dd35ee2c7, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7989895021719547052, guid: bddcbabbbcc3d1d45b03b87dd35ee2c7, type: 3}
