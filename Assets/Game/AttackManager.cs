@@ -34,6 +34,10 @@ namespace Game {
 		
 		public AttackHandle MakeAttack(AttackBase attackPrefab, Vector2 targetPosition, Vector2 characterPosition) {
 			var attack = Instantiate(attackPrefab);
+			attack.InitAttack(new Damage {
+				Type = DamageType.Physical,
+				Value = 10
+			});
 			targetPosition = attack.CheckPosition(targetPosition, characterPosition);
 			attack.transform.position = new Vector2(characterPosition.x + targetPosition.x, characterPosition.y + targetPosition.y);
 			var angle = Mathf.Atan2(targetPosition.y, targetPosition.x) * Mathf.Rad2Deg;
@@ -53,9 +57,9 @@ namespace Game {
 			Destroy(attack.gameObject);
 		}
 
-		private void ApplyAttack(Character character) {
+		private void ApplyAttack(Character character, Damage attackDamage) {
 			Debug.Log($"Apply attack to {character}");
-			character.Hit();
+			character.Hit(attackDamage);
 		}
 		
 	}

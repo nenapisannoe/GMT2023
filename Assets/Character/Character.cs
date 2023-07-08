@@ -42,8 +42,9 @@ public class Character : MonoBehaviour {
         handle.OnComplete -= MakeBasicAttackComplete;
     }
     
-    public void Hit() {
+    public void Hit(Damage damage) {
         m_CharacterAnimator.PlayHit();
+        Debug.LogWarning($"Got hit: {damage.Value}");
     }
     
 }
