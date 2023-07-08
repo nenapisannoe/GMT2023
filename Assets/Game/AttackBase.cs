@@ -1,12 +1,24 @@
+using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using DG.Tweening;
 using UnityEngine;
 
 namespace Game {
 	
 	public class AttackBase : MonoBehaviour {
+		
+		[SerializeField] private Animator m_Animator;
+		[SerializeField] private Collider2D m_Collider;
+		private static readonly int Play = Animator.StringToHash("Play");
 
-		[SerializeField] private SpriteRenderer m_Sprite;
+		private List<PlayerController> attackedTargets = new List<PlayerController>();
+
+		public event Action OnRemoveLock = delegate {};
+		public event Action<PlayerController> OnAttackTarget = delegate {};
+
+		private void Awake() {
+			m_Collider.enabled = false;
+		}
 
 		public Vector2 CheckPosition(Vector2 pos) {
 			// проверяем позицию и корректируем в зависимости от скилла
@@ -14,15 +26,29 @@ namespace Game {
 		}
 
 		public async UniTask Run() {
-			var sequence = DOTween.Sequence();
-			sequence.Insert(0f, m_Sprite.DOColor(Color.red, 0.5f));
-			sequence.Insert(0.5f, m_Sprite.DOColor(Color.white, 0.5f));
-			await sequence.ToUniTask();
+			var task = AnimationStateHandler.AwaitStateExitEvent(m_Animator);
+			m_Animator.SetTrigger(Play);
+			await task;
 		}
 
-		private void AttackTrigger() {
-			//проверяем коллайдер, не попали ли в него враги
-			
+		public void RemoveLockTrigger() {
+			OnRemoveLock.Invoke();
+		}
+
+		public void AttackTrigger() {
+			m_Collider.enabled = true;
+		}
+		
+		public void AttackCompleteTrigger() {
+			m_Collider.enabled = false;
+		}
+		
+		private void OnTriggerEnter2D(Collider2D other) {
+			var character = other.gameObject.GetComponent<PlayerController>();
+			if (character != null && !attackedTargets.Contains(character)) {
+				attackedTargets.Add(character);
+				OnAttackTarget.Invoke(character);
+			}
 		}
 		
 	}

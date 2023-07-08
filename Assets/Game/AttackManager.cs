@@ -1,8 +1,22 @@
 using System;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace Game {
+
+	public class AttackHandle {
+		
+		public event Action OnRemoveLock = delegate {};
+		public event Action<AttackHandle> OnComplete = delegate {};
+
+		public void RemoveLock() {
+			OnRemoveLock.Invoke();
+		}
+		
+		public void Complete() {
+			OnComplete.Invoke(this);
+		}
+
+	}
 	
 	public class AttackManager : MonoBehaviour {
 
@@ -15,14 +29,29 @@ namespace Game {
 			Instance = this;
 		}
 
-		public async UniTask MakeAttack(AttackBase attackPrefab, Vector2 position) {
+		public AttackHandle MakeAttack(AttackBase attackPrefab, Vector2 position) {
 			var attack = Instantiate(attackPrefab);
 			var pos = Camera.main.ScreenToWorldPoint(position);
 			pos.z = 0f;
 			pos = attack.CheckPosition(pos);
 			attack.transform.position = pos;
+			var handle = new AttackHandle();
+			WaitAttackComplete(handle, attack);
+			return handle;
+		}
+
+		private async void WaitAttackComplete(AttackHandle handle, AttackBase attack) {
+			attack.OnRemoveLock += handle.RemoveLock;
+			attack.OnAttackTarget += ApplyAttack;
 			await attack.Run();
+			attack.OnRemoveLock -= handle.RemoveLock;
+			attack.OnAttackTarget -= ApplyAttack;
+			handle.Complete();
 			Destroy(attack.gameObject);
+		}
+
+		private void ApplyAttack(PlayerController character) {
+			Debug.Log($"Apply attack to {character}");
 		}
 		
 	}

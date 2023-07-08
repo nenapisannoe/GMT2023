@@ -32,13 +32,23 @@ namespace Game {
 			MakeBasicAttack();
 		}
 		
-		private async void MakeBasicAttack() {
+		private void MakeBasicAttack() {
 			if (actionsLocked) {
 				return;
 			}
 			actionsLocked = true;
-			await AttackManager.Instance.MakeAttack(BasicAttackPrefab, mouseInput);
+			var handle = AttackManager.Instance.MakeAttack(BasicAttackPrefab, mouseInput);
+			handle.OnComplete += MakeBasicAttackComplete;
+			handle.OnRemoveLock += UnlockActions;
+		}
+
+		private void UnlockActions() {
 			actionsLocked = false;
+		}
+
+		private void MakeBasicAttackComplete(AttackHandle handle) {
+			handle.OnRemoveLock -= UnlockActions;
+			handle.OnComplete -= MakeBasicAttackComplete;
 		}
 
 		private void FixedUpdate() {
