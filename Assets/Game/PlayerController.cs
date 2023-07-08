@@ -34,7 +34,7 @@ namespace Game {
 				return;
 			}
 			actionsLocked = true;
-			await AttackManager.Instance.MakeAttack(BasicAttackPrefab, mouseInput);
+			await AttackManager.Instance.MakeAttack(BasicAttackPrefab, mouseInput, transform.position);
 			actionsLocked = false;
 		}
 

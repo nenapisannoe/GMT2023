@@ -8,9 +8,11 @@ namespace Game {
 
 		[SerializeField] private SpriteRenderer m_Sprite;
 
-		public Vector2 CheckPosition(Vector2 pos) {
+		public Vector2 CheckPosition(Vector2 mousePos, Vector2 characterPos)
+		{
+			var newPos = new Vector3(Mathf.Clamp(mousePos.x, characterPos.x - 1f, characterPos.x + 1f), Mathf.Clamp(mousePos.y, characterPos.y - 1f, characterPos.y + 1f), 0f); 
 			// проверяем позицию и корректируем в зависимости от скилла
-			return pos;
+			return newPos;
 		}
 
 		public async UniTask Run() {
