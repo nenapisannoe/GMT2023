@@ -16,6 +16,7 @@ namespace Game {
 
 		private void FixedUpdate() {
 			m_Rigidbody.velocity = moveInput * moveSpeed;
+			
 		}
 
 	}
