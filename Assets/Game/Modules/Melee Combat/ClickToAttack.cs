@@ -20,8 +20,7 @@ public class ClickToAttack : MonoBehaviour
             Vector3 v3Pos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
             v3Pos = Camera.main.ScreenToWorldPoint(v3Pos);
 
-            var characterPos = character.transform.localPosition;
-            //var posX = characterPos.x;
+            var characterPos = character.transform.position;
             v3Pos -= characterPos;
 
            /*  if (v3Pos.x > 0.0f)
@@ -29,7 +28,7 @@ public class ClickToAttack : MonoBehaviour
              else
                  posX -= 3f;*/
             
-             Instantiate(attackPrefab, new Vector3(0f,0f,0f)/*new Vector3(Mathf.Clamp(v3Pos.x, characterPos.x - 3f, characterPos.x + 3f), v3Pos.y, 0f)*/, Quaternion.identity); 
+            Instantiate(attackPrefab, new Vector3(0f,0f,0f)/*new Vector3(Mathf.Clamp(v3Pos.x, characterPos.x - 3f, characterPos.x + 3f), v3Pos.y, 0f)*/, Quaternion.identity); 
             Debug.Log(v3Pos);
 
 
