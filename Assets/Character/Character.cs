@@ -11,10 +11,12 @@ public class Character : HitableObject {
     [SerializeField] private CharacterAnimator m_CharacterAnimator;
     [SerializeField] private Animator m_SpriteAnimator;
     
+    [SerializeField] public bool isInWater;
     [SerializeField] protected float maxHealth;
     [SerializeField] protected float currentHealth;
     [SerializeField] protected float attack;
     [SerializeField] MicroBar _hpBar;
+
 
     private List<Damage> attackHistory = new List<Damage>();
 
