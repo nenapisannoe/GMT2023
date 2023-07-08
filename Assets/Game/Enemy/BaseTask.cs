@@ -30,9 +30,13 @@ namespace Game.Enemy {
 
 		public abstract ExecutorTask GetTaskExecutor();
 
-		public abstract Vector3 GetMoveToPositionTaskData();
+		public virtual Vector3 GetMoveToPositionTaskData() {
+			return Vector3.zero;
+		}
 
-		public abstract Vector3 GetAttackTargetTaskData();
+		public virtual Vector3 GetAttackTargetTaskData() {
+			return Vector3.zero;
+		}
 
 		public virtual void RunTask() {
 			lastUseTime = Main.GetEpochTime();
