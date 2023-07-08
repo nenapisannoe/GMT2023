@@ -29,11 +29,11 @@ namespace Game {
 			Instance = this;
 		}
 
-		public AttackHandle MakeAttack(AttackBase attackPrefab, Vector2 position) {
+		public AttackHandle MakeAttack(AttackBase attackPrefab, Vector2 mousePosition, Vector2 characterPosition) {
 			var attack = Instantiate(attackPrefab);
-			var pos = Camera.main.ScreenToWorldPoint(position);
+			var pos = Camera.main.ScreenToWorldPoint(mousePosition);
 			pos.z = 0f;
-			pos = attack.CheckPosition(pos);
+			pos = attack.CheckPosition(pos, characterPosition);
 			attack.transform.position = pos;
 			var handle = new AttackHandle();
 			WaitAttackComplete(handle, attack);

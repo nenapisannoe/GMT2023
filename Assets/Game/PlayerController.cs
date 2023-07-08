@@ -37,7 +37,7 @@ namespace Game {
 				return;
 			}
 			actionsLocked = true;
-			var handle = AttackManager.Instance.MakeAttack(BasicAttackPrefab, mouseInput);
+			var handle = AttackManager.Instance.MakeAttack(BasicAttackPrefab, mouseInput, transform.position);
 			handle.OnComplete += MakeBasicAttackComplete;
 			handle.OnRemoveLock += UnlockActions;
 		}
