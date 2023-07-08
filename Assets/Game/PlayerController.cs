@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 namespace Game {
 	
-	public class PlayerController : MonoBehaviour {
+	public class PlayerController : Character {
 		
 		[SerializeField] private Rigidbody2D m_Rigidbody;
 		[SerializeField] private Animator m_Animator;
