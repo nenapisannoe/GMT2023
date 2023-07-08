@@ -220,9 +220,10 @@ MonoBehaviour:
   m_CharacterAnimator: {fileID: 3919505246402276771}
   m_Rigidbody: {fileID: 6763127397276080488}
   m_SpriteAnimator: {fileID: 730584168381687332}
-  maxHealth: 0
-  currentHealth: 0
+  maxHealth: 100
+  currentHealth: 100
   attack: 0
+  _hpBar: {fileID: 0}
   m_PlayerCharacter: {fileID: 0}
   MeleeAttackPrefab: {fileID: 5403528772207945096, guid: 0cd89f24996237f41b806111f3b06798, type: 3}
   RangeAttackPrefab: {fileID: 2353485949457271487, guid: ffacb647b6f88964e9b9e7c02a4a2954, type: 3}

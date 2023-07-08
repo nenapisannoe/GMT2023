@@ -1,5 +1,7 @@
 using Game;
 using UnityEngine;
+using Microlight.MicroBar;
+using System.Collections.Generic;
 
 public class Character : HitableObject {
     
@@ -13,7 +15,15 @@ public class Character : HitableObject {
     [SerializeField] protected float maxHealth;
     [SerializeField] protected float currentHealth;
     [SerializeField] protected float attack;
-    
+    [SerializeField] MicroBar _hpBar;
+
+    private List<Damage> attackHistory = new List<Damage>();
+
+    private void Start()
+    {
+        if (_hpBar != null) _hpBar.Initialize(maxHealth);
+    }
+
     protected bool actionsLocked;
     
     protected void SetVelocity(Vector2 velocity) {
@@ -44,7 +54,28 @@ public class Character : HitableObject {
     
     public void Hit(Damage damage) {
         m_CharacterAnimator.PlayHit();
-        Debug.LogWarning($"Got hit: {damage.Value}");
+
+        currentHealth -= damage.Value;
+        if (currentHealth < 0) currentHealth = 0;
+
+        if (_hpBar != null) _hpBar.UpdateHealthBar(currentHealth);
+
+        attackHistory.Add(damage);
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+
+    }
+
+    private void Die()
+    {
+        foreach (Damage damage in attackHistory)
+        {
+            Debug.Log($"Attack: {damage.Type}, Damage: {damage.Value}");
+        }
+        Debug.Log($"{this} is now dead");
     }
 
     public override void attakMe(Damage attackDamage){
