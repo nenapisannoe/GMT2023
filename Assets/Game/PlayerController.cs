@@ -6,7 +6,7 @@ namespace Game {
 	public class PlayerController : Character {
 		
 		[SerializeField] private Rigidbody2D m_Rigidbody;
-		[SerializeField] private Animator m_Animator;
+		[SerializeField] private Animator m_SpriteAnimator;
 
 		[Space]
 		[Header("Attacks")]
@@ -53,8 +53,8 @@ namespace Game {
 
 		private void FixedUpdate() {
 			var vel = actionsLocked ? Vector2.zero : moveInput * moveSpeed;
-			m_Animator.SetBool(IsWalking, vel != Vector2.zero);
-			m_Animator.SetFloat(Vertical, vel.y);
+			m_SpriteAnimator.SetBool(IsWalking, vel != Vector2.zero);
+			m_SpriteAnimator.SetFloat(Vertical, vel.y);
 			transform.localScale = vel.x < 0 ? new Vector3(-1f, 1f, 1f) : new Vector3(1f, 1f, 1f);
 			m_Rigidbody.velocity = vel;
 		}

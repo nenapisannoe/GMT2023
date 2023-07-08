@@ -52,6 +52,7 @@ namespace Game {
 
 		private void ApplyAttack(Character character) {
 			Debug.Log($"Apply attack to {character}");
+			character.Hit();
 		}
 		
 	}
