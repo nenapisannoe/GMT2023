@@ -17,7 +17,7 @@ namespace Game {
 
 	}
 	
-	public class AttackBase : MonoBehaviour {
+	public abstract class AttackBase : MonoBehaviour {
 		
 		[SerializeField] private Animator m_Animator;
 		[SerializeField] private Collider2D m_Collider;
@@ -38,16 +38,12 @@ namespace Game {
 			attackDamage = damage;
 		}
 
-		public Vector2 CheckPosition(Vector2 mousePos, Vector2 characterPos)
-		{
-			var newPos = mousePos - characterPos;
-			newPos.Normalize();
-			return newPos;
-		}
+		public abstract Vector2 CheckPosition(Vector2 mousePos, Vector2 characterPos);
 
-		public async UniTask Run() {
+		public virtual async UniTask Run() {
 			var task = AnimationStateHandler.AwaitStateExitEvent(m_Animator);
 			m_Animator.SetTrigger(Play);
+			
 			await task;
 		}
 
@@ -55,16 +51,15 @@ namespace Game {
 			OnRemoveLock.Invoke();
 		}
 
-		public void AttackTrigger() {
+		public virtual void AttackTrigger() {
 			m_Collider.enabled = true;
 		}
 		
-		public void AttackCompleteTrigger() {
+		public virtual void AttackCompleteTrigger() {
 			m_Collider.enabled = false;
 		}
 
-
-		private void OnTriggerEnter2D(Collider2D other) {
+		protected virtual void OnTriggerEnter2D(Collider2D other) {
 			var character = other.gameObject.GetComponent<Character>();
 			if (character != null && !attackedTargets.Contains(character)) {
 				attackedTargets.Add(character);

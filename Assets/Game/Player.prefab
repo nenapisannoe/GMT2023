@@ -254,7 +254,7 @@ MonoBehaviour:
   maxHealth: 0
   currentHealth: 0
   attack: 0
-  BasicAttackPrefab: {fileID: 9118703103406231035, guid: 0cd89f24996237f41b806111f3b06798, type: 3}
+  BasicAttackPrefab: {fileID: 2353485949457271487, guid: ffacb647b6f88964e9b9e7c02a4a2954, type: 3}
 --- !u!114 &8776816039795106336
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -22,9 +22,9 @@ namespace Game.Enemy {
 		}
 
 		public void Init() {
-			var task = new MeleeAttackTask();
-			task.InitTask(this, m_PlayerCharacter);
-			m_AvailableTasks.Add(task);
+			//var task = new MeleeAttackTask();
+			//task.InitTask(this, m_PlayerCharacter);
+			//m_AvailableTasks.Add(task);
 		}
 
 		private void Update() {
