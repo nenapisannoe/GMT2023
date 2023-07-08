@@ -55,8 +55,9 @@ namespace Game {
 			Destroy(attack.gameObject);
 		}
 
-		private void ApplyAttack(PlayerController character) {
+		private void ApplyAttack(Character character) {
 			Debug.Log($"Apply attack to {character}");
+			character.Hit();
 		}
 		
 	}

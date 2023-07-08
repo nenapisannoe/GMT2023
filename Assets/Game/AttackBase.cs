@@ -11,10 +11,10 @@ namespace Game {
 		[SerializeField] private Collider2D m_Collider;
 		private static readonly int Play = Animator.StringToHash("Play");
 
-		private List<PlayerController> attackedTargets = new List<PlayerController>();
+		private List<Character> attackedTargets = new List<Character>();
 
 		public event Action OnRemoveLock = delegate {};
-		public event Action<PlayerController> OnAttackTarget = delegate {};
+		public event Action<Character> OnAttackTarget = delegate {};
 
 		private void Awake() {
 			m_Collider.enabled = false;
@@ -47,7 +47,7 @@ namespace Game {
 
 
 		private void OnTriggerEnter2D(Collider2D other) {
-			var character = other.gameObject.GetComponent<PlayerController>();
+			var character = other.gameObject.GetComponent<Character>();
 			if (character != null && !attackedTargets.Contains(character)) {
 				attackedTargets.Add(character);
 				OnAttackTarget.Invoke(character);
