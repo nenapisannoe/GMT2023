@@ -41,7 +41,11 @@ namespace Game.PlayerAttacks {
 		
 		protected override void OnTriggerEnter2D(Collider2D other) {
 			base.OnTriggerEnter2D(other);
-			canFinishAttack = true;
+			var target = other.gameObject.GetComponent<HitableObject>();
+			if (target != null){
+				canFinishAttack = true;
+			}
+			
 		}
 
 	}

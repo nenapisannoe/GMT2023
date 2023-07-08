@@ -11,10 +11,8 @@ namespace Game {
 	}
 
 	public class Damage {
-
 		public DamageType Type;
 		public float Value;
-
 	}
 	
 	public abstract class AttackBase : MonoBehaviour {
