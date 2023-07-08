@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game.Enemy {
@@ -11,32 +12,57 @@ namespace Game.Enemy {
 		[Header("Attacks")]
 		[SerializeField] private AttackBase BasicAttackPrefab;
 
-		private MeleeAttackTask MeleeAttackTask = new MeleeAttackTask();
+		private List<BaseAttackTask> m_AvailableTasks = new List<BaseAttackTask>();
+		private BaseAttackTask ActiveTask;
 		
 		private float moveSpeed = 2f;
+
+		private void Awake() {
+			Init();
+		}
+
+		public void Init() {
+			var task = new MeleeAttackTask();
+			task.InitTask(this, m_PlayerCharacter);
+			m_AvailableTasks.Add(task);
+		}
 
 		private void Update() {
 			if (actionsLocked) {
 				return;
 			}
-			MeleeAttackTask.InitTask(this, m_PlayerCharacter);
 			EnemyTick();
 		}
 
 		private void EnemyTick() {
-			//тут выбираем какую таску сейчас выполнять, пока что одна
-			var et = MeleeAttackTask.GetTaskExecutor();
-			RunExecutorTask(MeleeAttackTask, et);
+			if (ActiveTask == null) {
+				foreach (var task in m_AvailableTasks) {
+					if (task.CanExecuteTask()) {
+						ActiveTask = task;
+						break;
+					}
+				}
+			}
+
+			if (ActiveTask == null) {
+				return;
+			}
+
+			RunTask(ActiveTask);
 		}
 
-		private void RunExecutorTask(MeleeAttackTask task, ExecutorTask et) {
+		private void RunTask(BaseAttackTask task) {
+			var et = ActiveTask.GetTaskExecutor();
 			switch (et) {
 				case ExecutorTask.MoveToPosition:
 					RunMoveToPositionTask(task.GetMoveToPositionTaskData());
 					break;
 				
 				case ExecutorTask.AttackTarget:
+					task.RunTask();
 					RunAttackTargetTask(task.GetAttackTargetTaskData());
+					task.CompleteTask();
+					ActiveTask = null;
 					break;
 				
 				default:
