@@ -4,8 +4,9 @@ using UnityEngine.InputSystem;
 namespace Game {
 	
 	public class PlayerController : MonoBehaviour {
-
+		
 		[SerializeField] private Rigidbody2D m_Rigidbody;
+		[SerializeField] private Animator m_Animator;
 
 		[Space]
 		[Header("Attacks")]
@@ -16,6 +17,8 @@ namespace Game {
 		private Vector2 mouseInput;
 
 		private bool actionsLocked;
+		private static readonly int IsWalking = Animator.StringToHash("IsWalking");
+		private static readonly int Vertical = Animator.StringToHash("Vertical");
 
 		private void OnMove(InputValue input) {
 			moveInput = input.Get<Vector2>();
@@ -40,6 +43,9 @@ namespace Game {
 
 		private void FixedUpdate() {
 			var vel = actionsLocked ? Vector2.zero : moveInput * moveSpeed;
+			m_Animator.SetBool(IsWalking, vel != Vector2.zero);
+			m_Animator.SetFloat(Vertical, vel.y);
+			transform.localScale = vel.x < 0 ? new Vector3(-1f, 1f, 1f) : new Vector3(1f, 1f, 1f);
 			m_Rigidbody.velocity = vel;
 		}
 
