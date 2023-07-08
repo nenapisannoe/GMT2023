@@ -1,6 +1,8 @@
 using Game;
 using UnityEngine;
 using Microlight.MicroBar;
+using System.Collections.Generic;
+
 public class Character : MonoBehaviour {
     
     protected static readonly int IsWalking = Animator.StringToHash("IsWalking");
@@ -15,6 +17,7 @@ public class Character : MonoBehaviour {
     [SerializeField] protected float attack;
     [SerializeField] MicroBar _hpBar;
 
+    private List<Damage> attackHistory = new List<Damage>();
 
     private void Start()
     {
@@ -51,12 +54,13 @@ public class Character : MonoBehaviour {
     
     public void Hit(Damage damage) {
         m_CharacterAnimator.PlayHit();
-        Debug.LogWarning($"Got hit: {damage.Value}");
 
         currentHealth -= damage.Value;
         if (currentHealth < 0) currentHealth = 0;
 
         if (_hpBar != null) _hpBar.UpdateHealthBar(currentHealth);
+
+        attackHistory.Add(damage);
 
         if (currentHealth <= 0)
         {
@@ -67,6 +71,10 @@ public class Character : MonoBehaviour {
 
     private void Die()
     {
+        foreach (Damage damage in attackHistory)
+        {
+            Debug.Log($"Attack: {damage.Type}, Damage: {damage.Value}");
+        }
         Debug.Log($"{this} is now dead");
     }
 
