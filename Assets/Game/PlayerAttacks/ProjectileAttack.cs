@@ -15,6 +15,15 @@ namespace Game.PlayerAttacks {
 			var task = base.Run();
 			await task;
 			await UniTask.WaitUntil(() => canFinishAttack);
+			var endTask = ProjectileEnd();
+			await endTask;
+		}
+		
+		public virtual async UniTask ProjectileEnd() {
+			var task = AnimationStateHandler.AwaitStateExitEvent(m_Animator);
+			m_Animator.SetTrigger(End);
+			
+			await task;
 		}
 
 		public override Vector2 CheckPosition(Vector2 mousePos, Vector2 characterPos) {

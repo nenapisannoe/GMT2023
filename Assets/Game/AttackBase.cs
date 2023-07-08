@@ -19,9 +19,10 @@ namespace Game {
 	
 	public abstract class AttackBase : MonoBehaviour {
 		
-		[SerializeField] private Animator m_Animator;
+		[SerializeField] protected Animator m_Animator;
 		[SerializeField] private Collider2D m_Collider;
 		private static readonly int Play = Animator.StringToHash("Play");
+		protected static readonly int End = Animator.StringToHash("End");
 
 		private List<Character> attackedTargets = new List<Character>();
 
