@@ -32,13 +32,11 @@ namespace Game {
 			Instance = this;
 		}
 		
-		public AttackHandle MakeAttack(AttackBase attackPrefab, Vector2 mousePosition, Vector2 characterPosition) {
+		public AttackHandle MakeAttack(AttackBase attackPrefab, Vector2 targetPosition, Vector2 characterPosition) {
 			var attack = Instantiate(attackPrefab);
-			var pos = Camera.main.ScreenToWorldPoint(mousePosition);
-			pos.z = 0f;
-			pos = attack.CheckPosition(pos, characterPosition);
-			attack.transform.position = new Vector2(characterPosition.x + pos.x, characterPosition.y + pos.y);
-			var angle = Mathf.Atan2(pos.y, pos.x) * Mathf.Rad2Deg;
+			targetPosition = attack.CheckPosition(targetPosition, characterPosition);
+			attack.transform.position = new Vector2(characterPosition.x + targetPosition.x, characterPosition.y + targetPosition.y);
+			var angle = Mathf.Atan2(targetPosition.y, targetPosition.x) * Mathf.Rad2Deg;
 			attack.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
 			var handle = new AttackHandle();
 			WaitAttackComplete(handle, attack);
