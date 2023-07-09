@@ -40,7 +40,7 @@ namespace Game {
 		public event Action OnRemoveLock = delegate {};
 		public event Action<AttackBase, HitableObject, Damage> OnAttackTarget = delegate {};
 
-		protected Damage attackDamage;
+		public Damage attackDamage;
 		
 		private void Awake() {
 			m_Collider.enabled = false;
