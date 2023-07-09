@@ -28,6 +28,7 @@ namespace Game.Enemy {
 		[SerializeField] private AttackBase MeleeAttackPrefab;
 		[SerializeField] private AttackBase RangeAttackPrefab;
 
+		public int SpecialBlockDamage = 15;
 		[SerializeField] private GameObject SpecialOnBlockPrefab;
 
 		private List<ReactiveAbility> m_ReactiveAbilities = new List<ReactiveAbility>();
@@ -205,6 +206,11 @@ namespace Game.Enemy {
 		public async void HitNotify(Character player, AttackBase attackPrefab) {
 			if (attackPrefab is BossMeleeAttack) {
 				PlaySpecial(SpecialOnBlockPrefab, player.transform.position);
+				player.Hit(new Damage {
+					Attacker = this,
+					Type = DamageType.HeroAbility1,
+					Value = SpecialBlockDamage
+				});
 				return;
 			}
 		}
