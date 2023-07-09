@@ -36,7 +36,7 @@ namespace Game {
 			Instance = this;
 		}
 		
-		public AttackHandle MakeAttack(Character attacker, AttackBase attackPrefab, Vector2 targetPosition) {
+		public AttackHandle MakeAttack(HitableObject attacker, AttackBase attackPrefab, Vector2 targetPosition) {
 			var attack = Instantiate(attackPrefab);
 			attack.InitAttack(new Damage {
 				Attacker = attacker,

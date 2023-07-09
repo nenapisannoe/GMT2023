@@ -45,6 +45,7 @@ namespace Game.PlayerAttacks {
 			var target = other.gameObject.GetComponent<HitableObject>();
 			if (target != null){
 				canFinishAttack = true;
+				Destroy(gameObject, 0.5f);
 			}
 			
 		}

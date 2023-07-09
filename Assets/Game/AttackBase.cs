@@ -13,7 +13,7 @@ namespace Game {
 	}
 
 	public class Damage {
-		public Character Attacker;
+		public HitableObject Attacker;
 		public DamageType Type;
 		public float Value;
 	}

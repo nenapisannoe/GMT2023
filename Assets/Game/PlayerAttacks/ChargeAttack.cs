@@ -14,8 +14,11 @@ namespace Game.PlayerAttacks {
 		
 		public override async UniTask Run() {
 			var task = base.Run();
-			var chargeTask = ChargeCharacter(attackDamage.Attacker);
-			await UniTask.WhenAll(task, chargeTask);
+			if (attackDamage.Attacker is Character attacker) {
+				var chargeTask = ChargeCharacter(attacker);
+				await UniTask.WhenAll(task, chargeTask);
+			}
+			
 		}
 
 		private async UniTask ChargeCharacter(Character attacker) {
