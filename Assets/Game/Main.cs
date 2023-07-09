@@ -5,12 +5,31 @@ namespace Game {
 	
 	public class Main : MonoBehaviour {
 
+		public static Main instance;
+
+
+		public GameObject skillScreen;
+
 		private void Awake() {
 			Debug.Log("[MAIN AWAKE]");
+			instance = this;
 		}
 
 		private void Start() {
 			Debug.Log("[MAIN START]");
+		}
+
+		public void showSkillScreen(){
+			skillScreen.SetActive(true);
+		}
+
+		public void enableAll(){
+			InicalizeManager.enableAll();
+		}
+
+		public void resetLevel(){
+			InicalizeManager.disableAll();
+			showSkillScreen();
 		}
 
 		public static int GetEpochTime() {

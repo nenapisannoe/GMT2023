@@ -264,8 +264,7 @@ namespace Game.Enemy {
 		{
 			base.Die();
 			Analyse();
-			
-			
+			Main.instance.resetLevel();			
 		}
 
 		void Analyse()

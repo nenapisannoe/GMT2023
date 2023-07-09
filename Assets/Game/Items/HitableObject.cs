@@ -17,6 +17,7 @@ namespace Game {
         protected bool isKnockable = true;
 
         public void Awake(){
+            InicalizeManager.allObjects.Add(this);
             initialposition = gameObject.transform.position;
         }
 
