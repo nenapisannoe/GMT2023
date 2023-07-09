@@ -11,7 +11,7 @@ namespace Game {
         public bool isDanger = false;
 
         public override void attakMe(Damage attackDamage){
-            if (attackDamage.Type is DamageType.Contaminating){
+            if (attackDamage.Type is DamageType.BossAbility2){
                 isDanger = true;
                 gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
             }
