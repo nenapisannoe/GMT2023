@@ -30,6 +30,8 @@ namespace Game.Enemy {
 
 		public int SpecialBlockDamage = 15;
 		[SerializeField] private GameObject SpecialOnBlockPrefab;
+		[SerializeField] private GameObject SpecialMagicImmunePrefab;
+		[SerializeField] private GameObject SpecialRegenPrefab;
 
 		private bool rangeAttackEnabled = false;
 
@@ -44,6 +46,9 @@ namespace Game.Enemy {
 
 		public GameObject sutunEffet;
 
+		private bool regenActive;
+		private bool regenInterrupted;
+
 		private void Awake() {
 			sutunEffet.SetActive(false);
 			Init();
@@ -55,7 +60,6 @@ namespace Game.Enemy {
     	}
 
 		public void Init() {
-
 			if (m_ReactiveAbilities.Contains(ReactiveAbility.Block)) {
 				IsBossMeleeAttackImmune = true;
 			}
@@ -72,14 +76,13 @@ namespace Game.Enemy {
 			open_chest_task.InitTask(this, null, null);
 			m_AvailableTasks.Add(open_chest_task);
 			
-			
 			BaseTask task = new MeleeAttackTask();
 			task.InitTask(this, m_PlayerCharacter, MeleeAttackPrefab);
 			m_AvailableTasks.Add(task);
 		}
 
 		private void Update() {
-			if (actionsLocked) {
+			if (actionsLocked || regenActive) {
 				return;
 			}
 			if (isStunned) {
@@ -132,6 +135,13 @@ namespace Game.Enemy {
 					ActiveTask = null;
 					break;
 				
+				case ExecutorTask.Regen:
+					task.RunTask();
+					RunRegenTask(task as RegenTask);
+					task.CompleteTask();
+					ActiveTask = null;
+					break;
+				
 				default:
 					throw new ArgumentOutOfRangeException(nameof(et), et, null);
 				
@@ -169,6 +179,23 @@ namespace Game.Enemy {
 				ApproachTask.InitTask(this, m_PlayerCharacter, null);
 			}
 
+		}
+
+		private async void RunRegenTask(RegenTask task) {
+			SetVelocity(Vector2.zero);
+			if (actionsLocked) {
+				return;
+			}
+			regenActive = true;
+			regenInterrupted = false;
+			PlaySpecial(SpecialRegenPrefab, transform.position, task.RegenDuration);
+			var ticks = task.RegenDuration;
+			while (!regenInterrupted && currentHealth > 0 && ticks > 0) {
+				Heal(task.RegenPower);
+				ticks--;
+				await UniTask.Delay(TimeSpan.FromSeconds(1));
+			}
+			regenActive = false;
 		}
 
 		private bool isImmune;
@@ -211,7 +238,7 @@ namespace Game.Enemy {
 		}
 
 		public async void HitNotify(Character player, AttackBase attackPrefab) {
-			if (attackPrefab is BossMeleeAttack) {
+			if (attackPrefab is BossMeleeAttack && IsBossMeleeAttackImmune) {
 				PlaySpecial(SpecialOnBlockPrefab, player.transform.position);
 				player.Hit(new Damage {
 					Attacker = this,
@@ -219,6 +246,13 @@ namespace Game.Enemy {
 					Value = SpecialBlockDamage
 				});
 				return;
+			}
+			if (attackPrefab is ProjectileAttack && isAbility2Immune) {
+				PlaySpecial(SpecialMagicImmunePrefab, transform.position);
+			}
+			
+			if (!regenInterrupted && attackPrefab is ChannelingAttack) {
+				regenInterrupted = true;
 			}
 		}
 
@@ -228,10 +262,10 @@ namespace Game.Enemy {
 			isImmune = false;
 		}
 
-		private async void PlaySpecial(GameObject prefab, Vector3 position) {
+		private async void PlaySpecial(GameObject prefab, Vector3 position, int duration = 4) {
 			var instance = Instantiate(prefab);
 			instance.transform.position = position;
-			await UniTask.Delay(TimeSpan.FromSeconds(4));
+			await UniTask.Delay(TimeSpan.FromSeconds(duration));
 			Destroy(instance);
 		}
 		
@@ -346,6 +380,11 @@ namespace Game.Enemy {
 					task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
 					m_AvailableTasks.Add(task);
 					rangeAttackEnabled = true;
+					
+					//todo: regen
+					task = new RegenTask();
+					task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
+					m_AvailableTasks.Add(task);
 				}
 				else if (attackTypes[DamageType.BossAbility1] + DamageType.BossAbility3 >= keyOfMaxValue && m_ReactiveAbilities.Contains(ReactiveAbility.Dodge) && rangeAttackEnabled)
 				{

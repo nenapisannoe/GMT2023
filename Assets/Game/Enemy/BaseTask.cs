@@ -6,7 +6,8 @@ namespace Game.Enemy {
 	public enum ExecutorTask {
 		MoveToPosition,
 		AttackTarget,
-		OpenChest
+		OpenChest,
+		Regen
 	}
 	
 	public abstract class BaseTask {
