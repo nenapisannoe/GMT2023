@@ -1,8 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace Game.Enemy {
+
+	public enum ReactiveAbility {
+		Block,
+		StoneBoots,
+		Dodge,
+		Countershot,
+		MagicImmunity,
+		DodgeCharge
+	}
 	
 	public class EnemyController : Character {
 
@@ -14,6 +24,7 @@ namespace Game.Enemy {
 		[SerializeField] private AttackBase RangeAttackPrefab;
 		[SerializeField] private AttackBase AreaAttackPrefab;
 
+		private List<ReactiveAbility> m_ReactiveAbilities = new List<ReactiveAbility>();
 		private List<BaseTask> m_AvailableTasks = new List<BaseTask>();
 		private BaseTask ActiveTask;
 		private ApproachTask ApproachTask = new ApproachTask();
@@ -25,6 +36,14 @@ namespace Game.Enemy {
 		}
 
 		public void Init() {
+			m_ReactiveAbilities.Add(ReactiveAbility.Block);
+			m_ReactiveAbilities.Add(ReactiveAbility.StoneBoots);
+			m_ReactiveAbilities.Add(ReactiveAbility.Dodge);
+			m_ReactiveAbilities.Add(ReactiveAbility.Countershot);
+			m_ReactiveAbilities.Add(ReactiveAbility.MagicImmunity);
+			m_ReactiveAbilities.Add(ReactiveAbility.DodgeCharge);
+			
+			
 			ApproachTask.InitTask(this, m_PlayerCharacter, null);
 			
 			
@@ -102,6 +121,10 @@ namespace Game.Enemy {
 			MakeBasicAttack(task.AttackPrefab, target);
 		}
 
+		public void Notify(PlayerController player, AttackBase attackPrefab) {
+			//notify
+		}
+		
 	}
 	
 }
