@@ -290,7 +290,7 @@ namespace Game.Enemy {
 			forceVector = (transform.position - from.position).normalized * 10f;
 			await UniTask.Delay(TimeSpan.FromSeconds(0.2f));
 			forceVector *= 0.1f;
-			await UniTask.Delay(TimeSpan.FromSeconds(0.2f));
+			await UniTask.Delay(TimeSpan.FromSeconds(0.8f));
 			forceVector = Vector2.zero;
 		}
 
