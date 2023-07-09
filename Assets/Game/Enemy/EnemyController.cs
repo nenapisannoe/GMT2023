@@ -319,8 +319,8 @@ namespace Game.Enemy {
 		{
 			int skill_id = Analyse();		
 			roundCount++;
+			Debug.Log("был тут");
 			Main.instance.resetLevel(skill_id);			
-			attackHistory.Clear();
 		}
 
 		int Analyse()
@@ -354,7 +354,6 @@ namespace Game.Enemy {
 						else
 						{
 							attackTypes.Add(DamageType.BossAbility1, 1);
-							attackTypes.Add(DamageType.BossAbility3, 0);
 						}
 
 						break;
@@ -381,7 +380,6 @@ namespace Game.Enemy {
 						else
 						{
 							attackTypes.Add(DamageType.BossAbility3, 1);
-							attackTypes.Add(DamageType.BossAbility1, 0);
 						}
 
 						break;
@@ -405,8 +403,24 @@ namespace Game.Enemy {
 			int perkValue = -1;
 
 				var keyOfMaxValue = attackTypes.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
-				
-				if (roundCount == 3 && !regenEnabled)
+
+				if (roundCount == 0)
+				{
+					m_ReactiveAbilities.Add(ReactiveAbility.Block);
+					perkValue = 0;
+				}
+				if (roundCount == 1)
+				{
+					m_ReactiveAbilities.Add(ReactiveAbility.Dodge);
+					m_ReactiveAbilities.Add(ReactiveAbility.DodgeCharge);
+					perkValue = 2;
+				}
+				else if (roundCount == 2)
+				{
+					m_ReactiveAbilities.Add(ReactiveAbility.MagicImmunity);
+					perkValue = 3;
+				}
+				else if (roundCount == 3 && !regenEnabled)
 				{
 					BaseTask task = new RegenTask();
 					task = new RegenTask();
@@ -414,123 +428,38 @@ namespace Game.Enemy {
 					m_AvailableTasks.Add(task);
 					regenEnabled = true;
 					perkValue = 6;
-					return perkValue;
 				}
-
-				if (attackTypes.ContainsKey(DamageType.BossMeleeAttack) && keyOfMaxValue == DamageType.BossMeleeAttack)
+				else if (roundCount == 4)
 				{
-					if(!m_ReactiveAbilities.Contains(ReactiveAbility.Block))
-					{
-						m_ReactiveAbilities.Add(ReactiveAbility.Block);
-						perkValue = 0;
-						return perkValue;
-					}
-					else
-					{
-						attackTypes[DamageType.BossMeleeAttack] = 0;
-						keyOfMaxValue = attackTypes.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
-					}
+					BaseTask task = new RangeAttackTask();
+					task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
+					m_AvailableTasks.Add(task);
+					rangeAttackEnabled = true;
+					perkValue = 4;
 				}
-				
-				if ((attackTypes.ContainsKey(DamageType.BossAbility1) || attackTypes.ContainsKey(DamageType.BossAbility3)) && attackTypes[DamageType.BossAbility1] + attackTypes[DamageType.BossAbility3] >= attackTypes[keyOfMaxValue])
+				else if(roundCount == 5)
 				{
-					if (!m_ReactiveAbilities.Contains(ReactiveAbility.Dodge) &&
-					    !m_ReactiveAbilities.Contains(ReactiveAbility.DodgeCharge))
-					{
-						m_ReactiveAbilities.Add(ReactiveAbility.Dodge);
-						m_ReactiveAbilities.Add(ReactiveAbility.DodgeCharge);
-						perkValue = 2;
-						return perkValue;
-					}
-					else if (!rangeAttackEnabled && !m_ReactiveAbilities.Contains(ReactiveAbility.AvoidWater))
-					{
-						BaseTask task = new RangeAttackTask();
-						task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
-						m_AvailableTasks.Add(task);
-						rangeAttackEnabled = true;
-						m_ReactiveAbilities.Add(ReactiveAbility.AvoidWater);
-						perkValue = 4;
-						return perkValue;
-					}
-					else if (!m_ReactiveAbilities.Contains(ReactiveAbility.StoneBoots))
-					{
-						m_ReactiveAbilities.Add(ReactiveAbility.StoneBoots);
-						perkValue = 1;
-						return perkValue;
-					}
-					else
-					{
-						attackTypes[DamageType.BossAbility3] = 0;
-						attackTypes[DamageType.BossAbility1] = 0;
-						keyOfMaxValue = attackTypes.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
-					}
+					BaseTask task = new ChestOpeningTask();
+					task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
+					m_AvailableTasks.Add(task);
+					chestOpeningEnabled = true;
+					perkValue = 7;
 				}
-				
-				if (attackTypes.ContainsKey(DamageType.BossAbility2) && keyOfMaxValue == DamageType.BossAbility2)
+				else if (roundCount == 6)
 				{
-					if (!m_ReactiveAbilities.Contains(ReactiveAbility.Block))
-					{
-						m_ReactiveAbilities.Add(ReactiveAbility.MagicImmunity);
-						perkValue = 3;
-						return perkValue;
-					}
-					else
-					{
-						attackTypes[DamageType.BossAbility2] = 0;
-						keyOfMaxValue = attackTypes.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
-					}
+					m_ReactiveAbilities.Add(ReactiveAbility.StoneBoots);
+					perkValue = 1;
 				}
-
-				if (attackTypes.ContainsKey(DamageType.BarrelExplosion) && keyOfMaxValue == DamageType.BarrelExplosion)
+				else if (roundCount == 7)
 				{
-					if (!m_ReactiveAbilities.Contains(ReactiveAbility.ShootBarrels))
-					{
-						m_ReactiveAbilities.Add(ReactiveAbility.ShootBarrels);
-						perkValue = 5;
-						return perkValue;
-					}
-					else
-					{
-						attackTypes[DamageType.BarrelExplosion] = 0;
-						keyOfMaxValue = attackTypes.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
-					}
+					m_ReactiveAbilities.Add(ReactiveAbility.ShootBarrels);
+					perkValue = 5;
 				}
-				
-				if (attackTypes.ContainsKey(DamageType.BossAbility4) && keyOfMaxValue == DamageType.BossAbility4)
+				else if (roundCount == 8)
 				{
-					if (!chestOpeningEnabled)
-					{
-						BaseTask task = new ChestOpeningTask();
-						task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
-						m_AvailableTasks.Add(task);
-						chestOpeningEnabled = true;
-						perkValue = 7;
-						return perkValue;
-					}
-					else
-					{
-						attackTypes[DamageType.BossAbility4] = 0;
-						keyOfMaxValue = attackTypes.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
-					}
+					perkValue = 8;
+                    m_ReactiveAbilities.Add(ReactiveAbility.ImmunityMagma);
 				}
-				
-				if(attackTypes.ContainsKey(DamageType.Magma) && keyOfMaxValue == DamageType.Magma)
-				{
-					if (!m_ReactiveAbilities.Contains(ReactiveAbility.ImmunityMagma))
-					{
-						m_ReactiveAbilities.Add(ReactiveAbility.ImmunityMagma);
-						perkValue = 8;
-					}
-					else
-					{
-						attackTypes[DamageType.Magma] = 0;
-						keyOfMaxValue = attackTypes.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
-					}
-
-				}
-
-				
-				
 				return perkValue;
 		}
 
