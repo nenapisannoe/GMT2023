@@ -26,7 +26,7 @@ public class Character : HitableObject {
     }
 
     public void SetVelocity(Vector2 velocity) {
-        m_Rigidbody.velocity = velocity;
+        moveVector = velocity;
         m_SpriteAnimator.SetBool(IsWalking, velocity != Vector2.zero);
         m_SpriteAnimator.SetFloat(Vertical, velocity.y);
         transform.localScale = velocity.x < 0 ? new Vector3(-1f, 1f, 1f) : new Vector3(1f, 1f, 1f);
@@ -44,10 +44,6 @@ public class Character : HitableObject {
         var handle = AttackManager.Instance.MakeAttack(this, attackPrefab, target);
         handle.OnComplete += MakeBasicAttackComplete;
         handle.OnRemoveLock += UnlockActions;
-    }
-
-    protected void UnlockActions() {
-        actionsLocked = false;
     }
 
     private void MakeBasicAttackComplete(AttackHandle handle) {

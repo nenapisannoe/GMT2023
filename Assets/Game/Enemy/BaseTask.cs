@@ -14,11 +14,11 @@ namespace Game.Enemy {
 		protected abstract int m_Cooldown { get; }
 		public bool IsCooldown => Main.GetEpochTime() - lastUseTime < m_Cooldown;
 
-		protected Character executor;
-		protected Character target;
+		protected EnemyController executor;
+		protected HitableObject target;
 		public AttackBase AttackPrefab;
 
-		public void InitTask(Character executor, Character target, AttackBase attackPrefab) {
+		public void InitTask(EnemyController executor, Character target, AttackBase attackPrefab) {
 			this.executor = executor;
 			this.target = target;
 			AttackPrefab = attackPrefab;
@@ -46,7 +46,7 @@ namespace Game.Enemy {
 			
 		}
 
-		protected double GetDistance(Vector3 p1, Vector3 p2) {
+		public static double GetDistance(Vector3 p1, Vector3 p2) {
 			return Math.Sqrt(Math.Pow(p2.x - p1.x, 2) + Math.Pow(p2.y - p1.y, 2));
 		}
 		
