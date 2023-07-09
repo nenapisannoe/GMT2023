@@ -31,12 +31,16 @@ namespace Game.Enemy {
 		public int SpecialBlockDamage = 15;
 		[SerializeField] private GameObject SpecialOnBlockPrefab;
 
+		private bool rangeAttackEnabled = false;
+
 		private List<ReactiveAbility> m_ReactiveAbilities = new List<ReactiveAbility>();
 		private List<BaseTask> m_AvailableTasks = new List<BaseTask>();
 		private BaseTask ActiveTask;
 		private ApproachTask ApproachTask = new ApproachTask();
 		
 		private float moveSpeed = 2f;
+		
+		private List<Damage> attackHistory = new List<Damage>();
 
 		private void Awake() {
 			Init();
@@ -47,11 +51,6 @@ namespace Game.Enemy {
     	}
 
 		public void Init() {
-			m_ReactiveAbilities.Add(ReactiveAbility.Block);
-			m_ReactiveAbilities.Add(ReactiveAbility.StoneBoots);
-			m_ReactiveAbilities.Add(ReactiveAbility.Dodge);
-			m_ReactiveAbilities.Add(ReactiveAbility.MagicImmunity);
-			m_ReactiveAbilities.Add(ReactiveAbility.DodgeCharge);
 
 			if (m_ReactiveAbilities.Contains(ReactiveAbility.Block)) {
 				IsBossMeleeAttackImmune = true;
@@ -72,9 +71,6 @@ namespace Game.Enemy {
 			
 			BaseTask task = new MeleeAttackTask();
 			task.InitTask(this, m_PlayerCharacter, MeleeAttackPrefab);
-			m_AvailableTasks.Add(task);
-			task = new RangeAttackTask();
-			task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
 			m_AvailableTasks.Add(task);
 		}
 
@@ -181,6 +177,7 @@ namespace Game.Enemy {
 				return;
 			}
 			base.Hit(damage);
+			attackHistory.Add(damage);
 			if ((ChestsStorage.active_chests.Count > 0) && (currentHealth <= 50)){
 				ApproachTask.InitTask(this, ChestsStorage.active_chests[0], null);
 			}
@@ -255,6 +252,117 @@ namespace Game.Enemy {
 			await UniTask.Delay(TimeSpan.FromSeconds(0.2f));
 			forceVector = Vector2.zero;
 			forceVector = Vector2.Perpendicular(forceVector);
+		}
+
+		protected override void Die()
+		{
+			base.Die();
+			Analyse();
+			
+			
+		}
+
+		void Analyse()
+		{
+			var attackTypes = new Dictionary<DamageType, int>();
+			foreach (var x in attackHistory)
+			{
+				var type = x.Type;
+				switch (type)
+				{
+					case DamageType.BossMeleeAttack:
+					{
+						if (attackTypes.ContainsKey(DamageType.BossMeleeAttack))
+						{
+							attackTypes[DamageType.BossMeleeAttack]++;
+						}
+						else
+						{
+							attackTypes.Add(DamageType.BossMeleeAttack, 1);
+						}
+						break;
+					}
+					case DamageType.BossAbility1:
+					{
+						if (attackTypes.ContainsKey(DamageType.BossAbility1))
+						{
+							attackTypes[DamageType.BossAbility1]++;
+						}
+						else
+						{
+							attackTypes.Add(DamageType.BossAbility1, 1);
+						}
+						break;
+					}
+					case DamageType.BossAbility2:
+					{
+						if (attackTypes.ContainsKey(DamageType.BossAbility2))
+						{
+							attackTypes[DamageType.BossAbility2]++;
+						}
+						else
+						{
+							attackTypes.Add(DamageType.BossAbility2, 1);
+						}
+						break;
+					}
+					case DamageType.BossAbility3:
+					{
+						if (attackTypes.ContainsKey(DamageType.BossAbility3))
+						{
+							attackTypes[DamageType.BossAbility3]++;
+						}
+						else
+						{
+							attackTypes.Add(DamageType.BossAbility3, 1);
+						}
+						break;
+					}
+					case DamageType.Magma:
+					{
+						if (attackTypes.ContainsKey(DamageType.Magma))
+						{
+							attackTypes[DamageType.Magma]++;
+						}
+						else
+						{
+							attackTypes.Add(DamageType.Magma, 1);
+						}
+						break;
+					}
+				}
+									
+				var keyOfMaxValue = attackTypes.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
+				if (attackTypes[DamageType.BossAbility1] + attackTypes[DamageType.BossAbility3] >= attackTypes[keyOfMaxValue] && m_ReactiveAbilities.Contains(ReactiveAbility.Dodge) && !rangeAttackEnabled)
+				{
+					BaseTask task = new MeleeAttackTask();
+					task = new RangeAttackTask();
+					task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
+					m_AvailableTasks.Add(task);
+					rangeAttackEnabled = true;
+				}
+				else if (attackTypes[DamageType.BossAbility1] + DamageType.BossAbility3 >= keyOfMaxValue && m_ReactiveAbilities.Contains(ReactiveAbility.Dodge) && rangeAttackEnabled)
+				{
+					m_ReactiveAbilities.Add(ReactiveAbility.StoneBoots);
+				}
+				else if (keyOfMaxValue == DamageType.BossMeleeAttack && !m_ReactiveAbilities.Contains(ReactiveAbility.Block))
+				{
+					m_ReactiveAbilities.Add(ReactiveAbility.Block);
+				}
+				else if (keyOfMaxValue == DamageType.BossAbility2 && !m_ReactiveAbilities.Contains(ReactiveAbility.MagicImmunity))
+				{
+					m_ReactiveAbilities.Add(ReactiveAbility.MagicImmunity);
+				}
+				else if (keyOfMaxValue == DamageType.BossAbility1 && !m_ReactiveAbilities.Contains(ReactiveAbility.Dodge) && !m_ReactiveAbilities.Contains(ReactiveAbility.DodgeCharge))
+				{
+					m_ReactiveAbilities.Add(ReactiveAbility.Dodge);
+					m_ReactiveAbilities.Add(ReactiveAbility.DodgeCharge);
+				}
+				else if (keyOfMaxValue == DamageType.BarrelExplosion)
+				{
+					//взлом замков
+				}
+			}
 		}
 		
 	}

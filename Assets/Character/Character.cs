@@ -18,7 +18,7 @@ public class Character : HitableObject {
     [SerializeField] MicroBar _hpBar;
 
 
-    private List<Damage> attackHistory = new List<Damage>();
+
 
     private void Start()
     {
@@ -68,8 +68,7 @@ public class Character : HitableObject {
         if (currentHealth < 0) currentHealth = 0;
 
         if (_hpBar != null) _hpBar.UpdateHealthBar(currentHealth);
-
-        attackHistory.Add(damage);
+        
 
         if (currentHealth <= 0)
         {
@@ -78,12 +77,12 @@ public class Character : HitableObject {
 
     }
 
-    private void Die()
+    protected virtual void Die()
     {
-        foreach (Damage damage in attackHistory)
+        /*foreach (Damage damage in attackHistory)
         {
             Debug.Log($"Attack: {damage.Type}, Damage: {damage.Value}");
-        }
+        }*/
         Debug.Log($"{this} is now dead");
     }
 
