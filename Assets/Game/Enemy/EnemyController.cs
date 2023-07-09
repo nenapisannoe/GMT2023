@@ -27,7 +27,9 @@ namespace Game.Enemy {
 		[Header("Attacks")]
 		[SerializeField] private AttackBase MeleeAttackPrefab;
 		[SerializeField] private AttackBase RangeAttackPrefab;
-		[SerializeField] private AttackBase AreaAttackPrefab;
+
+		public int SpecialBlockDamage = 15;
+		[SerializeField] private GameObject SpecialOnBlockPrefab;
 
 		private bool rangeAttackEnabled = false;
 
@@ -198,10 +200,29 @@ namespace Game.Enemy {
 			}
 		}
 
+		public async void HitNotify(Character player, AttackBase attackPrefab) {
+			if (attackPrefab is BossMeleeAttack) {
+				PlaySpecial(SpecialOnBlockPrefab, player.transform.position);
+				player.Hit(new Damage {
+					Attacker = this,
+					Type = DamageType.HeroAbility1,
+					Value = SpecialBlockDamage
+				});
+				return;
+			}
+		}
+
 		private async UniTask MakeImmune(int duration) {
 			isImmune = true;
 			await UniTask.Delay(TimeSpan.FromSeconds(duration));
 			isImmune = false;
+		}
+
+		private async void PlaySpecial(GameObject prefab, Vector3 position) {
+			var instance = Instantiate(prefab);
+			instance.transform.position = position;
+			await UniTask.Delay(TimeSpan.FromSeconds(4));
+			Destroy(instance);
 		}
 		
 		public async void MakeDodge(Transform from) {
