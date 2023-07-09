@@ -6,6 +6,7 @@ namespace Game.PlayerAttacks {
 	public class ProjectileAttack : AttackBase {
 
 		[SerializeField] private Rigidbody2D m_RigidBody;
+		public float ProjectileSpeed = 5f;
 
 		private Vector2 direction;
 
@@ -36,7 +37,7 @@ namespace Game.PlayerAttacks {
 		public override void AttackTrigger() {
 			base.AttackTrigger();
 
-			m_RigidBody.velocity = direction * 5f;
+			m_RigidBody.velocity = direction * ProjectileSpeed;
 		}
 		
 		protected override void OnTriggerEnter2D(Collider2D other) {

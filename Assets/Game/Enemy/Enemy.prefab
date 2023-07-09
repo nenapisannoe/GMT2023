@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 7287438596871070582}
   - component: {fileID: 3919505246402276771}
   - component: {fileID: 3501451730534334431}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -217,9 +217,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f44b23d3ff8849b39ba870db89a941fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CharacterAnimator: {fileID: 3919505246402276771}
   m_Rigidbody: {fileID: 6763127397276080488}
+  m_CharacterAnimator: {fileID: 3919505246402276771}
   m_SpriteAnimator: {fileID: 730584168381687332}
+  isInWater: 0
   maxHealth: 100
   currentHealth: 100
   attack: 0

@@ -25,11 +25,18 @@ public class Character : HitableObject {
         if (_hpBar != null) _hpBar.Initialize(maxHealth);
     }
 
-    protected void SetVelocity(Vector2 velocity) {
+    public void SetVelocity(Vector2 velocity) {
         m_Rigidbody.velocity = velocity;
         m_SpriteAnimator.SetBool(IsWalking, velocity != Vector2.zero);
         m_SpriteAnimator.SetFloat(Vertical, velocity.y);
         transform.localScale = velocity.x < 0 ? new Vector3(-1f, 1f, 1f) : new Vector3(1f, 1f, 1f);
+        if (this is PlayerController) {
+            Debug.Log(m_Rigidbody.velocity);
+        }
+    }
+
+    public void SetCharge(bool value) {
+        gameObject.layer = value ? 9 : 8;
     }
     
     protected void MakeBasicAttack(AttackBase attackPrefab, Vector2 target) {

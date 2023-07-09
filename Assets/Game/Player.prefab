@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 3210847598290289614}
   - component: {fileID: 8776816039795106336}
   - component: {fileID: 2000502450825936731}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -251,11 +251,16 @@ MonoBehaviour:
   m_Rigidbody: {fileID: 2262153441904610553}
   m_CharacterAnimator: {fileID: 8776816039795106336}
   m_SpriteAnimator: {fileID: 6328867871296183341}
+  isInWater: 0
   maxHealth: 300
   currentHealth: 300
   attack: 0
   _hpBar: {fileID: 0}
   BasicAttackPrefab: {fileID: 3177475654817738525, guid: 447e05014830b634cb2d02ab2296fe72, type: 3}
+  Ability1Prefab: {fileID: 2103604792518421408, guid: 6076451c300c5d34490355ffe6919d02, type: 3}
+  Ability2Prefab: {fileID: 2353485949457271487, guid: ffacb647b6f88964e9b9e7c02a4a2954, type: 3}
+  Ability3Prefab: {fileID: 8792960989708503493, guid: 04f6db044d251834cb0630c43cae0e75, type: 3}
+  Ability4Prefab: {fileID: 3177475654817738525, guid: 447e05014830b634cb2d02ab2296fe72, type: 3}
 --- !u!114 &8776816039795106336
 MonoBehaviour:
   m_ObjectHideFlags: 0
