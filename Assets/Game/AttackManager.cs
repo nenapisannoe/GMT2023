@@ -1,4 +1,5 @@
 using System;
+using Game.Enemy;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -23,6 +24,8 @@ namespace Game {
 	
 	public class AttackManager : MonoBehaviour {
 
+		[SerializeField] private EnemyController EnemyController;
+
 		public static AttackManager Instance;
 
 		float tiltAngle = 60.0f;
@@ -34,6 +37,9 @@ namespace Game {
 		}
 		
 		public AttackHandle MakeAttack(Character attacker, AttackBase attackPrefab, Vector2 targetPosition) {
+			if (attacker is PlayerController player) {
+				EnemyController.Notify(player, attackPrefab);
+			}
 			var attack = Instantiate(attackPrefab);
 			attack.InitAttack(new Damage {
 				Attacker = attacker,

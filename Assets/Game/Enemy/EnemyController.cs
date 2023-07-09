@@ -1,9 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 
 namespace Game.Enemy {
+
+	public enum ReactiveAbility {
+		Block,
+		StoneBoots,
+		Dodge,
+		Countershot,
+		MagicImmunity,
+		DodgeCharge
+	}
 	
 	public class EnemyController : Character {
 
@@ -15,6 +25,7 @@ namespace Game.Enemy {
 		[SerializeField] private AttackBase RangeAttackPrefab;
 		[SerializeField] private AttackBase AreaAttackPrefab;
 
+		private List<ReactiveAbility> m_ReactiveAbilities = new List<ReactiveAbility>();
 		private List<BaseTask> m_AvailableTasks = new List<BaseTask>();
 		private BaseTask ActiveTask;
 		private ApproachTask ApproachTask = new ApproachTask();
@@ -26,15 +37,24 @@ namespace Game.Enemy {
 		}
 
 		public void Init() {
+			m_ReactiveAbilities.Add(ReactiveAbility.Block);
+			m_ReactiveAbilities.Add(ReactiveAbility.StoneBoots);
+			m_ReactiveAbilities.Add(ReactiveAbility.Dodge);
+			m_ReactiveAbilities.Add(ReactiveAbility.Countershot);
+			m_ReactiveAbilities.Add(ReactiveAbility.MagicImmunity);
+			m_ReactiveAbilities.Add(ReactiveAbility.DodgeCharge);
+			
+			
 			ApproachTask.InitTask(this, m_PlayerCharacter, null);
 			BaseTask open_chest_task = new ChestOpeningTask();
 			open_chest_task.InitTask(this, null, null);
 			m_AvailableTasks.Add(open_chest_task);
 			
-			/*
+			
 			BaseTask task = new MeleeAttackTask();
 			task.InitTask(this, m_PlayerCharacter, MeleeAttackPrefab);
 			m_AvailableTasks.Add(task);
+			/*
 			task = new RangeAttackTask();
 			task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
 			m_AvailableTasks.Add(task);
@@ -140,6 +160,10 @@ namespace Game.Enemy {
 			}
 		}
 
+		public void Notify(PlayerController player, AttackBase attackPrefab) {
+			//notify
+		}
+		
 	}
 	
 }

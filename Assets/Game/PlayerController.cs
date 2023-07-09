@@ -54,15 +54,9 @@ namespace Game {
 		
 		
 		private void OnAbility4(InputValue input) {
-			if (input.isPressed) {
-				var pos = Camera.main.ScreenToWorldPoint(mouseInput);
-				SetVelocity(Vector2.zero);
-				currentAttackhandle = MakeChannelingAttack(Ability4Prefab, pos);
-			}
-			else {
-				(currentAttackhandle.Attack as ChannelingAttack).ChannelComplete();
-				currentAttackhandle = null;
-			}
+			var pos = Camera.main.ScreenToWorldPoint(mouseInput);
+			SetVelocity(Vector2.zero);
+			currentAttackhandle = MakeChannelingAttack(Ability4Prefab, pos);
 		}
 
 		private AttackHandle MakeChannelingAttack(AttackBase attackPrefab, Vector2 target) {
@@ -87,6 +81,13 @@ namespace Game {
 			}
 			var vel = actionsLocked ? Vector2.zero : moveInput * moveSpeed;
 			SetVelocity(vel);
+		}
+
+		public override void Hit(Damage damage) {
+			base.Hit(damage);
+			if (currentAttackhandle is { Attack: ChannelingAttack channelingAttack }) {
+				channelingAttack.InterruptChannel();
+			}
 		}
 
 	}

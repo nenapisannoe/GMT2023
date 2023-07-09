@@ -7,9 +7,10 @@ namespace Game.PlayerAttacks {
 	public class ChannelingAttack : AttackBase {
 
 		public float HitDelay = 1f;
+		public int MaxHits = 5;
 		
 		private bool canFinishAttack;
-		private bool hitStarted;
+		private int hits;
 		private static readonly int LockPlay = Animator.StringToHash("LockPlay");
 
 		public override async UniTask Run() {
@@ -21,23 +22,22 @@ namespace Game.PlayerAttacks {
 
 		private async void RepeatDamageAsync() {
 			while (!canFinishAttack) {
+				await UniTask.Delay(TimeSpan.FromSeconds(HitDelay));
 				ResetAttackedTargets();
 				m_Collider.enabled = false;
 				await UniTask.NextFrame();
-				m_Collider.enabled = hitStarted;
-				await UniTask.Delay(TimeSpan.FromSeconds(HitDelay));
+				m_Collider.enabled = true;
+				hits++;
+				if (hits == MaxHits) {
+					InterruptChannel();
+				}
 			}
 		}
 
-		public void ChannelComplete() {
+		public void InterruptChannel() {
 			canFinishAttack = true;
 			//лок управления снимается тут, а не в анимации
 			RemoveLockTrigger();
-		}
-		
-		public override void AttackTrigger() {
-			m_Collider.enabled = true;
-			hitStarted = true;
 		}
 
 		public override Vector2 CheckPosition(Vector2 mousePos, Vector2 characterPos) {
