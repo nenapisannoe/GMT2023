@@ -182,7 +182,7 @@ MonoBehaviour:
   m_Animator: {fileID: 1157228983122022667}
   m_Collider: {fileID: 4750605599919971620}
   damageType: 2
-  damage: 10
+  damage: 25
   m_RigidBody: {fileID: 7953799016783458252}
   ProjectileSpeed: 5
 --- !u!95 &1157228983122022667
