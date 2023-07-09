@@ -205,7 +205,7 @@ namespace Game.Enemy {
 			}
 			regenActive = true;
 			regenInterrupted = false;
-			PlaySpecial(SpecialRegenPrefab, transform.position, task.RegenDuration);
+			PlaySpecial(SpecialRegenPrefab, transform, task.RegenDuration);
 			var ticks = task.RegenDuration;
 			while (!regenInterrupted && currentHealth > 0 && ticks > 0) {
 				Heal(task.RegenPower);
@@ -263,7 +263,7 @@ namespace Game.Enemy {
 
 		public async void HitNotify(Character player, AttackBase attackPrefab) {
 			if (attackPrefab is BossMeleeAttack && IsBossMeleeAttackImmune) {
-				PlaySpecial(SpecialOnBlockPrefab, player.transform.position);
+				PlaySpecial(SpecialOnBlockPrefab, player.transform);
 				player.Hit(new Damage {
 					Attacker = this,
 					Type = DamageType.HeroAbility1,
@@ -272,7 +272,7 @@ namespace Game.Enemy {
 				return;
 			}
 			if (attackPrefab is ProjectileAttack && isAbility2Immune) {
-				PlaySpecial(SpecialMagicImmunePrefab, transform.position);
+				PlaySpecial(SpecialMagicImmunePrefab, transform);
 			}
 			
 			if (!regenInterrupted && attackPrefab is ChannelingAttack) {
@@ -286,9 +286,8 @@ namespace Game.Enemy {
 			isImmune = false;
 		}
 
-		private async void PlaySpecial(GameObject prefab, Vector3 position, int duration = 4) {
-			var instance = Instantiate(prefab);
-			instance.transform.position = position;
+		private async void PlaySpecial(GameObject prefab, Transform target, int duration = 4) {
+			var instance = Instantiate(prefab, target, false);
 			await UniTask.Delay(TimeSpan.FromSeconds(duration));
 			Destroy(instance);
 		}
