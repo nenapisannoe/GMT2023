@@ -318,8 +318,7 @@ namespace Game.Enemy {
 
 		protected override void Die()
 		{
-			int skill_id = Analyse();
-			base.Die();		
+			int skill_id = Analyse();		
 			roundCount++;
 			Main.instance.resetLevel(skill_id);			
 		}
