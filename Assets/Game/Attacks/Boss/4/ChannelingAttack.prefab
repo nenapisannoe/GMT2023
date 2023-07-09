@@ -136,8 +136,8 @@ MonoBehaviour:
   m_Animator: {fileID: 1157228983122022667}
   m_Collider: {fileID: 4750605599919971620}
   damageType: 0
-  damage: 1
-  HitDelay: 1
+  damage: 25
+  HitDelay: 0.5
   MaxHits: 5
 --- !u!95 &1157228983122022667
 Animator:

@@ -43,7 +43,7 @@ namespace Game.Enemy {
 		private BaseTask ActiveTask;
 		private ApproachTask ApproachTask = new ApproachTask();
 		
-		private float moveSpeed = 2f;
+		private float moveSpeed = 1.3f;
 		
 		private List<Damage> attackHistory = new List<Damage>();
 
