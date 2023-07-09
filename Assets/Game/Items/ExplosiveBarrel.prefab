@@ -83,7 +83,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Rigidbody: {fileID: 6067895449233500419}
-  explosionPerfab: {fileID: 2103604792518421408, guid: 6076451c300c5d34490355ffe6919d02, type: 3}
+  explosionPerfab: {fileID: 2103604792518421408, guid: ab1c58598c89a454ab194525f7b9292e, type: 3}
   explosionDamge: 50
 --- !u!50 &6067895449233500419
 Rigidbody2D:

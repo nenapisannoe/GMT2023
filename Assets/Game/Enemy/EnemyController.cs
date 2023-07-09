@@ -64,6 +64,7 @@ namespace Game.Enemy {
 		}
 
 		public void OnEnable(){
+			
 			base.OnEnable();
 			sutunEffet.SetActive(false);
 			ApproachTask.InitTask(this, m_PlayerCharacter, null);
