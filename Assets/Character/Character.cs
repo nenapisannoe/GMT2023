@@ -29,6 +29,10 @@ public class Character : HitableObject {
 
     public void OnEnable(){
         base.OnEnable();
+<<<<<<< HEAD
+=======
+        m_CharacterAnimator.m_Animator.WriteDefaultValues();
+>>>>>>> 6be922c3be1c79a6502f2dc6bc6ab4ef010aa0e5
         m_SpriteAnimator.WriteDefaultValues();
         currentHealth = maxHealth;
         if (_hpBar != null) _hpBar.Initialize(maxHealth);            

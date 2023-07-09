@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 using Game.PlayerAttacks;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+using Unity.VisualScripting;
 
 namespace Game.Enemy {
 
@@ -43,7 +44,7 @@ namespace Game.Enemy {
 		private BaseTask ActiveTask;
 		private ApproachTask ApproachTask = new ApproachTask();
 		
-		private float moveSpeed = 2f;
+		private float moveSpeed = 1.3f;
 		
 		private List<Damage> attackHistory = new List<Damage>();
 
@@ -229,7 +230,7 @@ namespace Game.Enemy {
 			}
 			base.Hit(damage);
 			attackHistory.Add(damage);
-			if ((ChestsStorage.active_chests.Count > 0) && (currentHealth <= 50)){
+			if (chestOpeningEnabled && (ChestsStorage.active_chests.Count > 0) && (currentHealth <= 50)){
 				ApproachTask.InitTask(this, ChestsStorage.active_chests[0], null);
 			}
 		}
@@ -318,11 +319,13 @@ namespace Game.Enemy {
 		{
 			int skill_id = Analyse();		
 			roundCount++;
+			Debug.Log("был тут");
 			Main.instance.resetLevel(skill_id);			
 		}
 
 		int Analyse()
 		{
+			Debug.Log("раундкаунт" + roundCount);
 			var attackTypes = new Dictionary<DamageType, int>();
 			foreach (var x in attackHistory)
 			{
@@ -400,80 +403,62 @@ namespace Game.Enemy {
 			int perkValue = -1;
 
 				var keyOfMaxValue = attackTypes.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
-				if (roundCount == 4 && !regenEnabled)
-				{
-					//todo: regen
-					BaseTask task = new RegenTask();
-					task = new RegenTask();
-					task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
-					m_AvailableTasks.Add(task);
-					regenEnabled = true;
-				}
-				if (roundCount == 6 && !chestOpeningEnabled)
-				{
-					BaseTask task = new ChestOpeningTask();
-					task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
-					m_AvailableTasks.Add(task);
-					chestOpeningEnabled = true;
-				}
-				else if (attackTypes.ContainsKey(DamageType.BossAbility1) &&
-				    attackTypes.ContainsKey(DamageType.BossAbility3) &&
-				    attackTypes[DamageType.BossAbility1] + attackTypes[DamageType.BossAbility3] >=
-				    attackTypes[keyOfMaxValue] && m_ReactiveAbilities.Contains(ReactiveAbility.Dodge) &&
-				    !rangeAttackEnabled)
-				{
-					BaseTask task = new MeleeAttackTask();
-					task = new RangeAttackTask();
-					task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
-					m_AvailableTasks.Add(task);
-					rangeAttackEnabled = true;
-					perkValue = 4;
 
-
-					m_ReactiveAbilities.Add(ReactiveAbility.AvoidWater);
-				}
-				else if (attackTypes.ContainsKey(DamageType.BossAbility1) &&
-				         attackTypes.ContainsKey(DamageType.BossAbility3) &&
-				         attackTypes[DamageType.BossAbility1] + DamageType.BossAbility3 >= keyOfMaxValue &&
-				         m_ReactiveAbilities.Contains(ReactiveAbility.Dodge) && rangeAttackEnabled)
-				{
-					m_ReactiveAbilities.Add(ReactiveAbility.StoneBoots);
-					perkValue = 1;
-				}
-				else if (attackTypes.ContainsKey(DamageType.BossMeleeAttack) &&
-				         keyOfMaxValue == DamageType.BossMeleeAttack &&
-				         !m_ReactiveAbilities.Contains(ReactiveAbility.Block))
+				if (roundCount == 0)
 				{
 					m_ReactiveAbilities.Add(ReactiveAbility.Block);
 					perkValue = 0;
 				}
-				else if (attackTypes.ContainsKey(DamageType.BossAbility2) && keyOfMaxValue == DamageType.BossAbility2 &&
-				         !m_ReactiveAbilities.Contains(ReactiveAbility.MagicImmunity))
-				{
-					m_ReactiveAbilities.Add(ReactiveAbility.MagicImmunity);
-					perkValue = 3;
-				}
-				else if (attackTypes.ContainsKey(DamageType.BossAbility1) && keyOfMaxValue == DamageType.BossAbility1 &&
-				         !m_ReactiveAbilities.Contains(ReactiveAbility.Dodge) &&
-				         !m_ReactiveAbilities.Contains(ReactiveAbility.DodgeCharge))
+				if (roundCount == 1)
 				{
 					m_ReactiveAbilities.Add(ReactiveAbility.Dodge);
 					m_ReactiveAbilities.Add(ReactiveAbility.DodgeCharge);
 					perkValue = 2;
 				}
-				else if (attackTypes.ContainsKey(DamageType.BarrelExplosion) &&
-				         !m_ReactiveAbilities.Contains(ReactiveAbility.ShootBarrels) &&
-				         keyOfMaxValue == DamageType.BarrelExplosion)
+				else if (roundCount == 2)
+				{
+					m_ReactiveAbilities.Add(ReactiveAbility.MagicImmunity);
+					perkValue = 3;
+				}
+				else if (roundCount == 3 && !regenEnabled)
+				{
+					BaseTask task = new RegenTask();
+					task = new RegenTask();
+					task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
+					m_AvailableTasks.Add(task);
+					regenEnabled = true;
+					perkValue = 6;
+				}
+				else if (roundCount == 4)
+				{
+					BaseTask task = new RangeAttackTask();
+					task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
+					m_AvailableTasks.Add(task);
+					rangeAttackEnabled = true;
+					perkValue = 4;
+				}
+				else if(roundCount == 5)
+				{
+					BaseTask task = new ChestOpeningTask();
+					task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
+					m_AvailableTasks.Add(task);
+					chestOpeningEnabled = true;
+					perkValue = 7;
+				}
+				else if (roundCount == 6)
+				{
+					m_ReactiveAbilities.Add(ReactiveAbility.StoneBoots);
+					perkValue = 1;
+				}
+				else if (roundCount == 7)
 				{
 					m_ReactiveAbilities.Add(ReactiveAbility.ShootBarrels);
 					perkValue = 5;
 				}
-				else if (attackTypes.ContainsKey(DamageType.Magma) &&
-				         !m_ReactiveAbilities.Contains(ReactiveAbility.ImmunityMagma) &&
-				         keyOfMaxValue == DamageType.Magma)
+				else if (roundCount == 8)
 				{
 					perkValue = 8;
-					m_ReactiveAbilities.Add(ReactiveAbility.ImmunityMagma);
+                    m_ReactiveAbilities.Add(ReactiveAbility.ImmunityMagma);
 				}
 				return perkValue;
 		}

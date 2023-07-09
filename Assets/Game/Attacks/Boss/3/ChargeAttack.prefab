@@ -327,7 +327,8 @@ MonoBehaviour:
   m_Animator: {fileID: 1157228983122022667}
   m_Collider: {fileID: 4750605599919971620}
   damageType: 0
-  damage: 5
+  damage: 10
+  Damage: 10
   m_RigidBody: {fileID: 4829658397031239354}
   ChargeDuration: 0.5
   ChargeSpeed: 10

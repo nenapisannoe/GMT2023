@@ -34,6 +34,7 @@ namespace Game {
 
 		[SerializeField] public DamageType damageType;
 		[SerializeField] public float damage = 10;
+		[SerializeField] public float Damage;
 
 		private List<HitableObject> attackedTargets = new List<HitableObject>();
 
