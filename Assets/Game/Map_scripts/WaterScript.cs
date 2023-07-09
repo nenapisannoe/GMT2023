@@ -15,7 +15,6 @@ public class WaterScript : MonoBehaviour
         var target = other.gameObject.GetComponent<Character>();
         if (target != null){
             target.isInWater = false;
-        }
-			
+        }	
 	}
 }

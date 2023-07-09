@@ -5,6 +5,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using Game.PlayerAttacks;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 namespace Game.Enemy {
 
@@ -58,6 +59,9 @@ namespace Game.Enemy {
 			
 			
 			ApproachTask.InitTask(this, m_PlayerCharacter, null);
+			BaseTask open_chest_task = new ChestOpeningTask();
+			open_chest_task.InitTask(this, null, null);
+			m_AvailableTasks.Add(open_chest_task);
 			
 			
 			BaseTask task = new MeleeAttackTask();
@@ -75,6 +79,9 @@ namespace Game.Enemy {
 
 		private void Update() {
 			if (actionsLocked) {
+				return;
+			}
+			if (isStunned) {
 				return;
 			}
 			EnemyTick();
@@ -117,6 +124,13 @@ namespace Game.Enemy {
 					ActiveTask = null;
 					break;
 				
+				case ExecutorTask.OpenChest:
+					task.RunTask();
+					RunOpenChestTask(task);
+					task.CompleteTask();
+					ActiveTask = null;
+					break;
+				
 				default:
 					throw new ArgumentOutOfRangeException(nameof(et), et, null);
 				
@@ -133,6 +147,26 @@ namespace Game.Enemy {
 			SetVelocity(Vector2.zero);
 			MakeBasicAttack(task.AttackPrefab, target);
 		}
+		
+		private async void RunOpenChestTask(BaseTask task) {
+			SetVelocity(Vector2.zero);
+			if (task.target is ChestContriller target_chest) {
+				//Здесь нужно вставить начало анимации открытия
+				await UniTask.Delay(TimeSpan.FromSeconds(2f));
+				//Здесь нужно вставить конец анимации открытия
+
+				if (target_chest.isDanger){
+					isStunned = true;
+					await UniTask.Delay(TimeSpan.FromSeconds(2f));
+					isStunned = false;
+				}else{
+					currentHealth += 10;
+				}
+				target_chest.open();
+				ApproachTask.InitTask(this, m_PlayerCharacter, null);
+			}
+
+		}
 
 		private bool isImmune;
 		private bool isPhysicalImmune;
@@ -146,6 +180,9 @@ namespace Game.Enemy {
 				return;
 			}
 			base.Hit(damage);
+			if ((ChestsStorage.active_chests.Count > 0) && (currentHealth <= 50)){
+				ApproachTask.InitTask(this, ChestsStorage.active_chests[0], null);
+			}
 		}
 
 		public async void Notify(PlayerController player, AttackBase attackPrefab) {

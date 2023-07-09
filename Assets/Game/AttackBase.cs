@@ -7,8 +7,9 @@ namespace Game {
 	
 	public enum DamageType {
 		Physical,
+		Fire,
+		Contaminating,
 		Magic,
-		Fire
 	}
 
 	public class Damage {

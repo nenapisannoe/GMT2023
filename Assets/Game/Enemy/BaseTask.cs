@@ -5,7 +5,8 @@ namespace Game.Enemy {
 	
 	public enum ExecutorTask {
 		MoveToPosition,
-		AttackTarget
+		AttackTarget,
+		OpenChest
 	}
 	
 	public abstract class BaseTask {
@@ -18,7 +19,7 @@ namespace Game.Enemy {
 		protected HitableObject target;
 		public AttackBase AttackPrefab;
 
-		public void InitTask(EnemyController executor, Character target, AttackBase attackPrefab) {
+		public void InitTask(EnemyController executor, HitableObject target, AttackBase attackPrefab) {
 			this.executor = executor;
 			this.target = target;
 			AttackPrefab = attackPrefab;

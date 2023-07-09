@@ -8,7 +8,8 @@ namespace Game {
         
         [SerializeField] private Rigidbody2D m_Rigidbody;
         protected bool actionsLocked;
-
+        protected bool isStunned;
+        
         protected Vector2 moveVector = Vector2.zero;
         protected Vector2 forceVector = Vector2.zero;
 
