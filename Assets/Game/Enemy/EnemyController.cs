@@ -42,11 +42,15 @@ namespace Game.Enemy {
 		
 		private List<Damage> attackHistory = new List<Damage>();
 
+		public GameObject sutunEffet;
+
 		private void Awake() {
+			sutunEffet.SetActive(false);
 			Init();
 		}
 
 		public void onEnanle(){
+			sutunEffet.SetActive(false);
         	Init();           
     	}
 
@@ -154,7 +158,9 @@ namespace Game.Enemy {
 
 				if (target_chest.isDanger){
 					isStunned = true;
+					sutunEffet.SetActive(true);
 					await UniTask.Delay(TimeSpan.FromSeconds(2f));
+					sutunEffet.SetActive(false);
 					isStunned = false;
 				}else{
 					Heal(40);
