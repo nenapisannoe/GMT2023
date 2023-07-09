@@ -161,7 +161,6 @@ namespace Game.Enemy {
 					isStunned = false;
 				}else{
 					Heal(40);
-
 				}
 				target_chest.open();
 				ApproachTask.InitTask(this, m_PlayerCharacter, null);

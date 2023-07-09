@@ -43,7 +43,6 @@ namespace Game {
 		}
 
 		private void OnFire(InputValue input) {
-			Debug.Log(Main.GetEpochTime() - BasicAttackLast_use);
 			if ((BasicAttackLast_use == 0) || (Main.GetEpochTime() - BasicAttackLast_use > BasicAttackCooldown)){
 				var pos = Camera.main.ScreenToWorldPoint(mouseInput);
 				SetVelocity(Vector2.zero);

@@ -263,7 +263,7 @@ MonoBehaviour:
   Ability4Prefab: {fileID: 8713937955532738786, guid: 787fc25a445e60b48a69b005466d7d8b, type: 3}
   BasicAttackCooldown: 0
   Ability1Cooldown: 1
-  Ability2Cooldown: 2
+  Ability2Cooldown: 5
   Ability3Cooldown: 3
   Ability4Cooldown: 4
 --- !u!114 &8776816039795106336
