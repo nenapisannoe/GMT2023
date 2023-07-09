@@ -19,7 +19,7 @@ namespace Game {
         public void OnEnable(){ 
             base.OnEnable();
             isDanger = false;
-            //gameObject.GetComponent<SpriteRenderer>().sprite = BaseSprite;
+            gameObject.GetComponent<SpriteRenderer>().sprite = BaseSprite;
         	ChestsStorage.active_chests.Add(this);         
     	}
 
