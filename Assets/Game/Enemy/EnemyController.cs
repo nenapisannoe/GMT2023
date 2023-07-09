@@ -91,6 +91,11 @@ namespace Game.Enemy {
 			BaseTask task = new MeleeAttackTask();
 			task.InitTask(this, m_PlayerCharacter, MeleeAttackPrefab);
 			m_AvailableTasks.Add(task);
+			
+			task = new RangeAttackTask();
+			task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
+			m_AvailableTasks.Add(task);
+			rangeAttackEnabled = true;
 		}
 
 		private void Update() {
