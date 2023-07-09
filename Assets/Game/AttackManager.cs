@@ -37,9 +37,6 @@ namespace Game {
 		}
 		
 		public AttackHandle MakeAttack(Character attacker, AttackBase attackPrefab, Vector2 targetPosition) {
-			if (attacker is PlayerController player) {
-				EnemyController.Notify(player, attackPrefab);
-			}
 			var attack = Instantiate(attackPrefab);
 			attack.InitAttack(new Damage {
 				Attacker = attacker,
@@ -54,6 +51,9 @@ namespace Game {
 			var handle = new AttackHandle();
 			handle.Attack = attack;
 			WaitAttackComplete(handle);
+			if (attacker is PlayerController player) {
+				EnemyController.Notify(player, attack);
+			}
 			return handle;
 		}
 

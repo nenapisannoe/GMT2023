@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using Cysharp.Threading.Tasks;
+using Game.PlayerAttacks;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 
@@ -10,9 +13,10 @@ namespace Game.Enemy {
 		Block,
 		StoneBoots,
 		Dodge,
-		Countershot,
 		MagicImmunity,
-		DodgeCharge
+		DodgeCharge,
+		AvoidWater,
+		AvoidMagma
 	}
 	
 	public class EnemyController : Character {
@@ -40,9 +44,18 @@ namespace Game.Enemy {
 			m_ReactiveAbilities.Add(ReactiveAbility.Block);
 			m_ReactiveAbilities.Add(ReactiveAbility.StoneBoots);
 			m_ReactiveAbilities.Add(ReactiveAbility.Dodge);
-			m_ReactiveAbilities.Add(ReactiveAbility.Countershot);
 			m_ReactiveAbilities.Add(ReactiveAbility.MagicImmunity);
 			m_ReactiveAbilities.Add(ReactiveAbility.DodgeCharge);
+
+			if (m_ReactiveAbilities.Contains(ReactiveAbility.Block)) {
+				isPhysicalImmune = true;
+			}
+			if (m_ReactiveAbilities.Contains(ReactiveAbility.StoneBoots)) {
+				isKnockable = false;
+			}
+			if (m_ReactiveAbilities.Contains(ReactiveAbility.MagicImmunity)) {
+				isMagicImmune = true;
+			}
 			
 			
 			ApproachTask.InitTask(this, m_PlayerCharacter, null);
@@ -103,12 +116,14 @@ namespace Game.Enemy {
 				case ExecutorTask.MoveToPosition:
 					RunMoveToPositionTask(task.GetMoveToPositionTaskData());
 					break;
+				
 				case ExecutorTask.AttackTarget:
 					task.RunTask();
 					RunAttackTargetTask(task, task.GetAttackTargetTaskData());
 					task.CompleteTask();
 					ActiveTask = null;
 					break;
+				
 				case ExecutorTask.OpenChest:
 					task.RunTask();
 					RunOpenChestTask(task);
@@ -132,7 +147,7 @@ namespace Game.Enemy {
 			SetVelocity(Vector2.zero);
 			MakeBasicAttack(task.AttackPrefab, target);
 		}
-
+		
 		private async void RunOpenChestTask(BaseTask task) {
 			SetVelocity(Vector2.zero);
 			if (task.target is ChestContriller target_chest) {
@@ -154,15 +169,73 @@ namespace Game.Enemy {
 
 		}
 
+		private bool isImmune;
+		private bool isPhysicalImmune;
+		private bool isMagicImmune;
+		
 		public override void Hit(Damage damage) {
+			if (isPhysicalImmune && damage.Type == DamageType.Physical) {
+				return;
+			}
+			if (isMagicImmune && damage.Type == DamageType.Magic) {
+				return;
+			}
 			base.Hit(damage);
 			if ((ChestsStorage.active_chests.Count > 0) && (currentHealth <= 50)){
 				ApproachTask.InitTask(this, ChestsStorage.active_chests[0], null);
 			}
 		}
 
-		public void Notify(PlayerController player, AttackBase attackPrefab) {
-			//notify
+		public async void Notify(PlayerController player, AttackBase attackPrefab) {
+			if (attackPrefab is AreaAttack) {
+				if (m_ReactiveAbilities.Contains(ReactiveAbility.Dodge)) {
+					var dist = BaseTask.GetDistance(transform.position, player.transform.position);
+					if (dist < 3.5d) {
+						MakeDodge(player.transform);
+					}
+				}
+				return;
+			}
+			if (attackPrefab is ChargeAttack charge) {
+				if (m_ReactiveAbilities.Contains(ReactiveAbility.DodgeCharge)) {
+					var dist = BaseTask.GetDistance(transform.position, player.transform.position);
+					if (dist < 5d) {
+						MakeChargeDodge(charge, player.transform);
+					}
+				}
+				return;
+			}
+		}
+
+		private async UniTask MakeImmune(int duration) {
+			isImmune = true;
+			await UniTask.Delay(TimeSpan.FromSeconds(duration));
+			isImmune = false;
+		}
+		
+		public async void MakeDodge(Transform from) {
+			forceVector = (transform.position - from.position).normalized * 10f;
+			await UniTask.Delay(TimeSpan.FromSeconds(0.2f));
+			forceVector = Vector2.zero;
+		}
+
+		public async void MakeChargeDodge(ChargeAttack attack, Transform from) {
+			forceVector = Vector2.Perpendicular(attack.CachePos) * 10f;
+			if (transform.position.y > from.position.y) {
+				forceVector.y = Math.Abs(forceVector.y);
+			}
+			else {
+				forceVector.y = -Math.Abs(forceVector.y);
+			}
+			if (transform.position.x > from.position.x) {
+				forceVector.x = Math.Abs(forceVector.x);
+			}
+			else {
+				forceVector.x = -Math.Abs(forceVector.x);
+			}
+			await UniTask.Delay(TimeSpan.FromSeconds(0.2f));
+			forceVector = Vector2.zero;
+			forceVector = Vector2.Perpendicular(forceVector);
 		}
 		
 	}

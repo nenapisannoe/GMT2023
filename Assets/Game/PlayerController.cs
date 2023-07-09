@@ -126,7 +126,7 @@ namespace Game {
 			handle.OnComplete -= MakeChannelingAttackComplete;
 		}
 
-		private void FixedUpdate() {
+		private void Update() {
 			if (actionsLocked) {
 				return;
 			}
