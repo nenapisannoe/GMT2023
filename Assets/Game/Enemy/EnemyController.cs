@@ -407,7 +407,7 @@ namespace Game.Enemy {
 					m_ReactiveAbilities.Add(ReactiveAbility.Dodge);
 					m_ReactiveAbilities.Add(ReactiveAbility.DodgeCharge);
 				}
-				else if (keyOfMaxValue == DamageType.BarrelExplosion)
+				else if (attackTypes.ContainsKey(DamageType.BarrelExplosion) && !m_ReactiveAbilities.Contains(ReactiveAbility.ShootBarrels) && keyOfMaxValue == DamageType.BarrelExplosion)
 				{
 					m_ReactiveAbilities.Add(ReactiveAbility.ShootBarrels);
 				}
