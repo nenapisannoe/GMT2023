@@ -12,10 +12,10 @@ public class Character : HitableObject {
     [SerializeField] private Animator m_SpriteAnimator;
     
     [SerializeField] public bool isInWater;
-    [SerializeField] protected float maxHealth;
-    [SerializeField] protected float currentHealth;
+    public float maxHealth;
+    public float currentHealth;
     [SerializeField] protected float attack;
-    [SerializeField] MicroBar _hpBar;
+    [SerializeField] protected MicroBar _hpBar;
 
 
 
@@ -57,8 +57,8 @@ public class Character : HitableObject {
 
     public void Heal(float healValue){
         currentHealth += healValue;
+        if (currentHealth > maxHealth) currentHealth = maxHealth;
         if (_hpBar != null) _hpBar.UpdateHealthBar(currentHealth);
-
     }
     
     public virtual void Hit(Damage damage) {

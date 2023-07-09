@@ -23,6 +23,9 @@ namespace Game.PlayerAttacks {
 		private async void RepeatDamageAsync() {
 			while (!canFinishAttack) {
 				await UniTask.Delay(TimeSpan.FromSeconds(HitDelay));
+				if (m_Collider == null) {
+					return;
+				}
 				ResetAttackedTargets();
 				m_Collider.enabled = false;
 				await UniTask.NextFrame();
