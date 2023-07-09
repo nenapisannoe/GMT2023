@@ -18,6 +18,7 @@ namespace Game {
         }
 
         public void OnEnable(){
+            BarrelsStorage.active_barrels.Add(this);
             base.OnEnable();
         }
 

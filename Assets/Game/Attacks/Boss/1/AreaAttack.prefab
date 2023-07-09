@@ -135,12 +135,8 @@ MonoBehaviour:
   m_Animator: {fileID: 1157228983122022667}
   m_Collider: {fileID: 4750605599919971620}
   damageType: 1
-<<<<<<< HEAD
-  damage: 1
-=======
   damage: 33
   Damage: 33
->>>>>>> 6be922c3be1c79a6502f2dc6bc6ab4ef010aa0e5
 --- !u!95 &1157228983122022667
 Animator:
   serializedVersion: 5
