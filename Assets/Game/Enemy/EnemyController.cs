@@ -229,7 +229,7 @@ namespace Game.Enemy {
 		}
 
 		public async void Notify(PlayerController player, AttackBase attackPrefab) {
-			if (attackPrefab is AreaAttack) {
+			if (attackPrefab is AreaAttack && !isInWater) {
 				if (m_ReactiveAbilities.Contains(ReactiveAbility.Dodge)) {
 					var dist = BaseTask.GetDistance(transform.position, player.transform.position);
 					if (dist < 3.5d) {
@@ -238,7 +238,7 @@ namespace Game.Enemy {
 				}
 				return;
 			}
-			if (attackPrefab is ChargeAttack charge) {
+			if (attackPrefab is ChargeAttack charge && !isInWater) {
 				if (m_ReactiveAbilities.Contains(ReactiveAbility.DodgeCharge)) {
 					var dist = BaseTask.GetDistance(transform.position, player.transform.position);
 					if (dist < 5d) {
