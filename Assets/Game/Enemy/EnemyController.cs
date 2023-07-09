@@ -396,6 +396,7 @@ namespace Game.Enemy {
 					task = new RegenTask();
 					task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
 					m_AvailableTasks.Add(task);
+					m_ReactiveAbilities.Add(ReactiveAbility.AvoidWater);
 				}
 				else if (attackTypes.ContainsKey(DamageType.BossAbility1) && attackTypes.ContainsKey(DamageType.BossAbility3) &&attackTypes[DamageType.BossAbility1] + DamageType.BossAbility3 >= keyOfMaxValue && m_ReactiveAbilities.Contains(ReactiveAbility.Dodge) && rangeAttackEnabled)
 				{
@@ -417,6 +418,10 @@ namespace Game.Enemy {
 				else if (attackTypes.ContainsKey(DamageType.BarrelExplosion) && !m_ReactiveAbilities.Contains(ReactiveAbility.ShootBarrels) && keyOfMaxValue == DamageType.BarrelExplosion)
 				{
 					m_ReactiveAbilities.Add(ReactiveAbility.ShootBarrels);
+				}
+				else if (attackTypes.ContainsKey(DamageType.Magma) && !m_ReactiveAbilities.Contains(ReactiveAbility.ImmunityMagma) && keyOfMaxValue == DamageType.Magma)
+				{
+					m_ReactiveAbilities.Add(ReactiveAbility.ImmunityMagma);
 				}
 			}
 		}
