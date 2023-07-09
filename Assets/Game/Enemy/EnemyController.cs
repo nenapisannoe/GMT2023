@@ -46,6 +46,8 @@ namespace Game.Enemy {
 		private List<Damage> attackHistory = new List<Damage>();
 
 		public GameObject sutunEffet;
+		
+		public int roundCount = 0;
 
 		private bool regenActive;
 		private bool regenInterrupted;
@@ -316,6 +318,7 @@ namespace Game.Enemy {
 		{
 			base.Die();
 			Analyse();
+			roundCount++;
 			Main.instance.resetLevel();			
 		}
 
@@ -398,7 +401,21 @@ namespace Game.Enemy {
 			int perkValue = -1;
 
 				var keyOfMaxValue = attackTypes.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
-				if (attackTypes.ContainsKey(DamageType.BossAbility1) &&
+				if (roundCount == 4)
+				{
+					//todo: regen
+					BaseTask task = new RegenTask();
+					task = new RegenTask();
+					task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
+					m_AvailableTasks.Add(task);
+				}
+				if (roundCount == 6)
+				{
+					BaseTask task = new ChestOpeningTask();
+					task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
+					m_AvailableTasks.Add(task);
+				}
+				else if (attackTypes.ContainsKey(DamageType.BossAbility1) &&
 				    attackTypes.ContainsKey(DamageType.BossAbility3) &&
 				    attackTypes[DamageType.BossAbility1] + attackTypes[DamageType.BossAbility3] >=
 				    attackTypes[keyOfMaxValue] && m_ReactiveAbilities.Contains(ReactiveAbility.Dodge) &&
@@ -411,10 +428,7 @@ namespace Game.Enemy {
 					rangeAttackEnabled = true;
 					perkValue = 4;
 
-					//todo: regen
-					task = new RegenTask();
-					task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
-					m_AvailableTasks.Add(task);
+
 					m_ReactiveAbilities.Add(ReactiveAbility.AvoidWater);
 				}
 				else if (attackTypes.ContainsKey(DamageType.BossAbility1) &&
