@@ -16,7 +16,7 @@ namespace Game {
 				    Type = DamageType.Fire,
 				    Value = explosionDamge
 			    });
-                Destroy(gameObject, 0.5);
+                Destroy(gameObject, 0.5f);
             }
             
         }
