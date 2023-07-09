@@ -16,7 +16,8 @@ namespace Game.Enemy {
 		MagicImmunity,
 		DodgeCharge,
 		AvoidWater,
-		AvoidMagma
+		AvoidMagma,
+		ShootBarrels
 	}
 	
 	public class EnemyController : Character {
@@ -35,7 +36,7 @@ namespace Game.Enemy {
 
 		private bool rangeAttackEnabled = false;
 
-		private List<ReactiveAbility> m_ReactiveAbilities = new List<ReactiveAbility>();
+		public List<ReactiveAbility> m_ReactiveAbilities = new List<ReactiveAbility>();
 		private List<BaseTask> m_AvailableTasks = new List<BaseTask>();
 		private BaseTask ActiveTask;
 		private ApproachTask ApproachTask = new ApproachTask();
@@ -78,6 +79,10 @@ namespace Game.Enemy {
 			
 			BaseTask task = new MeleeAttackTask();
 			task.InitTask(this, m_PlayerCharacter, MeleeAttackPrefab);
+			m_AvailableTasks.Add(task);
+			
+			task = new RangeAttackTask();
+			task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
 			m_AvailableTasks.Add(task);
 		}
 
