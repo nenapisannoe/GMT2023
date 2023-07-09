@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Rigidbody: {fileID: 7145101541528652402}
+  ContaminatedSprite: {fileID: 186053052, guid: 031fa25347520eb4f9069b7803c8e5b2, type: 3}
   isDanger: 0
 --- !u!50 &7145101541528652402
 Rigidbody2D:

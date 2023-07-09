@@ -4,6 +4,7 @@ using UnityEngine;
 namespace Game {
     public class ChestContriller :HitableObject
     {
+        public Sprite ContaminatedSprite;
         public void Start(){
             ChestsStorage.active_chests.Add(this);
         }
@@ -13,7 +14,7 @@ namespace Game {
         public override void attakMe(Damage attackDamage){
             if (attackDamage.Type is DamageType.Contaminating){
                 isDanger = true;
-                gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
+                gameObject.GetComponent<SpriteRenderer>().sprite = ContaminatedSprite;
             }
         }
 
