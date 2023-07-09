@@ -13,7 +13,7 @@ namespace Game.Enemy {
 		
 		private int lastUseTime;
 		protected abstract int m_Cooldown { get; }
-		public bool IsCooldown => Main.GetEpochTime() - lastUseTime < m_Cooldown;
+		public bool IsCooldown => Main.GetEpochTime() - lastUseTime > m_Cooldown;
 
 		public HitableObject executor;
 		public HitableObject target;

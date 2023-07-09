@@ -145,7 +145,8 @@ namespace Game.Enemy {
 					await UniTask.Delay(TimeSpan.FromSeconds(2f));
 					isStunned = false;
 				}else{
-					currentHealth += 10;
+					Heal(40);
+
 				}
 				target_chest.open();
 				ApproachTask.InitTask(this, m_PlayerCharacter, null);
