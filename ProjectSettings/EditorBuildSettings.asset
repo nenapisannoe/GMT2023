@@ -8,4 +8,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/Round Finish Scene.unity
+    guid: f24c1eda772c92d44a19db4e949ace86
+  - enabled: 1
+    path: Assets/Scenes/End Scene.unity
+    guid: 011b6f22b42211f4fa835914d4719ad2
   m_configObjects: {}
