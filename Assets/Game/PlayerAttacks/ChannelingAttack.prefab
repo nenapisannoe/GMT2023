@@ -133,6 +133,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Animator: {fileID: 1157228983122022667}
   m_Collider: {fileID: 4750605599919971620}
+  damageType: 0
+  damage: 1
+  HitDelay: 1
 --- !u!95 &1157228983122022667
 Animator:
   serializedVersion: 5

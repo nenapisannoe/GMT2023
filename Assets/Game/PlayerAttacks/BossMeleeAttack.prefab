@@ -180,6 +180,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Animator: {fileID: 1157228983122022667}
   m_Collider: {fileID: 7194026045952397832}
+  damageType: 0
+  damage: 12
 --- !u!95 &1157228983122022667
 Animator:
   serializedVersion: 5

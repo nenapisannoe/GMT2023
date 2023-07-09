@@ -11,7 +11,6 @@ namespace Game {
 	}
 
 	public class Damage {
-
 		public Character Attacker;
 		public DamageType Type;
 		public float Value;
@@ -25,6 +24,9 @@ namespace Game {
 		[SerializeField] protected Collider2D m_Collider;
 		private static readonly int Play = Animator.StringToHash("Play");
 		protected static readonly int End = Animator.StringToHash("End");
+
+		[SerializeField] public DamageType damageType;
+		[SerializeField] public float damage = 10;
 
 		private List<HitableObject> attackedTargets = new List<HitableObject>();
 

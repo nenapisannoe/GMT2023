@@ -37,8 +37,8 @@ namespace Game {
 			var attack = Instantiate(attackPrefab);
 			attack.InitAttack(new Damage {
 				Attacker = attacker,
-				Type = DamageType.Physical,
-				Value = 10
+				Type = attackPrefab.damageType,
+				Value = attackPrefab.damage
 			});
 			var characterPosition = attacker.transform.position;
 			targetPosition = attack.CheckPosition(targetPosition, characterPosition);
