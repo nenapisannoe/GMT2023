@@ -50,6 +50,12 @@ public class Character : HitableObject {
         handle.OnRemoveLock -= UnlockActions;
         handle.OnComplete -= MakeBasicAttackComplete;
     }
+
+    public void Heal(float healValue){
+        currentHealth += healValue;
+        if (_hpBar != null) _hpBar.UpdateHealthBar(currentHealth);
+
+    }
     
     public virtual void Hit(Damage damage) {
         m_CharacterAnimator.PlayHit();

@@ -14,11 +14,25 @@ namespace Game {
 		[SerializeField] private AttackBase Ability3Prefab;
 		[SerializeField] private AttackBase Ability4Prefab;
 
+		[Space]
+		[Header("Attacks cooldowns")]
+		[SerializeField] private float BasicAttackCooldown;
+		[SerializeField] private float Ability1Cooldown;
+		[SerializeField] private float Ability2Cooldown;
+		[SerializeField] private float Ability3Cooldown;
+		[SerializeField] private float Ability4Cooldown;
+
 		private float moveSpeed = 5f;
 		private Vector2 moveInput;
 		private Vector2 mouseInput;
 
 		private AttackHandle currentAttackhandle;
+
+		private int BasicAttackLast_use = 0;
+		private int Ability1CoolLast_use = 0;
+		private int Ability2CoolLast_use = 0;
+		private int Ability3CoolLast_use = 0;
+		private int Ability4CoolLast_use = 0;
 
 		private void OnMove(InputValue input) {
 			moveInput = input.Get<Vector2>();
@@ -29,34 +43,70 @@ namespace Game {
 		}
 
 		private void OnFire(InputValue input) {
-			var pos = Camera.main.ScreenToWorldPoint(mouseInput);
-			SetVelocity(Vector2.zero);
-			MakeBasicAttack(BasicAttackPrefab, pos);
+			if ((BasicAttackLast_use == 0) || (Main.GetEpochTime() - BasicAttackLast_use > BasicAttackCooldown)){
+				var pos = Camera.main.ScreenToWorldPoint(mouseInput);
+				SetVelocity(Vector2.zero);
+				MakeBasicAttack(BasicAttackPrefab, pos);
+
+				BasicAttackLast_use = Main.GetEpochTime();
+			}
+			if (BasicAttackLast_use == 0){
+				BasicAttackLast_use = Main.GetEpochTime();
+			}
 		}
 		
 		private void OnAbility1(InputValue input) {
-			var pos = Camera.main.ScreenToWorldPoint(mouseInput);
-			SetVelocity(Vector2.zero);
-			MakeBasicAttack(Ability1Prefab, pos);
+			if ((Ability1CoolLast_use == 0) || (Main.GetEpochTime() - Ability1CoolLast_use > Ability1Cooldown)){
+				var pos = Camera.main.ScreenToWorldPoint(mouseInput);
+				SetVelocity(Vector2.zero);
+				MakeBasicAttack(Ability1Prefab, pos);
+
+				Ability1CoolLast_use = Main.GetEpochTime();
+			}
+			if (Ability1CoolLast_use == 0){
+				Ability1CoolLast_use = Main.GetEpochTime();
+			}
+			
 		}
 		
 		private void OnAbility2(InputValue input) {
-			var pos = Camera.main.ScreenToWorldPoint(mouseInput);
-			SetVelocity(Vector2.zero);
-			MakeBasicAttack(Ability2Prefab, pos);
+			if ((Ability2CoolLast_use == 0) || (Main.GetEpochTime() - Ability2CoolLast_use > Ability2Cooldown)){
+				var pos = Camera.main.ScreenToWorldPoint(mouseInput);
+				SetVelocity(Vector2.zero);
+				MakeBasicAttack(Ability2Prefab, pos);
+
+				Ability2CoolLast_use = Main.GetEpochTime();
+			}
+			if (Ability2CoolLast_use == 0){
+				Ability2CoolLast_use = Main.GetEpochTime();
+			}
 		}
 		
 		private void OnAbility3(InputValue input) {
-			var pos = Camera.main.ScreenToWorldPoint(mouseInput);
-			SetVelocity(Vector2.zero);
-			MakeBasicAttack(Ability3Prefab, pos);
+			if ((Ability3CoolLast_use == 0) || (Main.GetEpochTime() - Ability3CoolLast_use > Ability3Cooldown)){
+				var pos = Camera.main.ScreenToWorldPoint(mouseInput);
+				SetVelocity(Vector2.zero);
+				MakeBasicAttack(Ability3Prefab, pos);
+
+				Ability3CoolLast_use = Main.GetEpochTime();
+			}
+			if (Ability3CoolLast_use == 0){
+				Ability3CoolLast_use = Main.GetEpochTime();
+			}
 		}
 		
 		
 		private void OnAbility4(InputValue input) {
-			var pos = Camera.main.ScreenToWorldPoint(mouseInput);
-			SetVelocity(Vector2.zero);
-			currentAttackhandle = MakeChannelingAttack(Ability4Prefab, pos);
+			if ((Ability4CoolLast_use == 0) || (Main.GetEpochTime() - Ability4CoolLast_use > Ability4Cooldown)){
+				var pos = Camera.main.ScreenToWorldPoint(mouseInput);
+				SetVelocity(Vector2.zero);
+				currentAttackhandle = MakeChannelingAttack(Ability4Prefab, pos);
+
+				Ability4CoolLast_use = Main.GetEpochTime();
+			}
+			if (Ability4CoolLast_use == 0){
+				Ability4CoolLast_use = Main.GetEpochTime();
+			}
 		}
 
 		private AttackHandle MakeChannelingAttack(AttackBase attackPrefab, Vector2 target) {
