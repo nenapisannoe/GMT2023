@@ -227,7 +227,7 @@ MonoBehaviour:
   _hpBar: {fileID: 0}
   m_PlayerCharacter: {fileID: 0}
   MeleeAttackPrefab: {fileID: 5403528772207945096, guid: 0cd89f24996237f41b806111f3b06798, type: 3}
-  RangeAttackPrefab: {fileID: 2353485949457271487, guid: ffacb647b6f88964e9b9e7c02a4a2954, type: 3}
+  RangeAttackPrefab: {fileID: 2353485949457271487, guid: 8edd0a70ff4c60d458a8288e82827ec8, type: 3}
   AreaAttackPrefab: {fileID: 2103604792518421408, guid: 6076451c300c5d34490355ffe6919d02, type: 3}
 --- !u!114 &3919505246402276771
 MonoBehaviour:

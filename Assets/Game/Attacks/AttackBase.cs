@@ -6,10 +6,15 @@ using UnityEngine;
 namespace Game {
 	
 	public enum DamageType {
-		Physical,
-		Fire,
-		Contaminating,
-		Magic,
+		BossMeleeAttack,
+		BossAbility1,
+		BossAbility2,
+		BossAbility3,
+		BossAbility4,
+		HeroAbility1,
+		HeroAbility2,
+		BarrelExplosion,
+		Magma
 	}
 
 	public class Damage {

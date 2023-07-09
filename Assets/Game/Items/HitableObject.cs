@@ -12,8 +12,22 @@ namespace Game {
         
         protected Vector2 moveVector = Vector2.zero;
         protected Vector2 forceVector = Vector2.zero;
+        private Vector2 initialposition;
 
         protected bool isKnockable = true;
+
+        public void Awake(){
+            initialposition = gameObject.transform.position;
+        }
+
+        public void onEnanle(){
+            gameObject.transform.position = initialposition;
+            actionsLocked = false;
+            isStunned = false;
+            isKnockable = true;
+            moveVector = Vector2.zero;
+            forceVector = Vector2.zero;
+        }
         
         public abstract void attakMe(Damage attackDamage); // Envoke when object is attaked
         

@@ -7,14 +7,20 @@ namespace Game {
         public AttackBase explosionPerfab;
         public int explosionDamge;
 
-        public void Start(){
+        public void Awake(){
             explosionPerfab.damage = explosionDamge;
         }
+
+        public void onEnanle(){
+            
+        }
+
+
         public override void attakMe(Damage attackDamage){
-            if ((attackDamage.Type is DamageType.Fire) || (attackDamage.Type is DamageType.Contaminating)){
+            if (attackDamage.Type is DamageType.BossAbility2){
                 Debug.Log("I Exploded");
                 AttackManager.Instance.MakeAttack(this, explosionPerfab, this.transform.position);
-                Destroy(gameObject, 0.5f);
+                gameObject.SetActive(false);
             }
             
         }

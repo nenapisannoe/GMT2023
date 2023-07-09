@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4562100019442586576}
   - component: {fileID: 8227355581375905331}
   - component: {fileID: 6067895449233500419}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ExplosiveBarrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -122,7 +122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7140304815252850140}
   - component: {fileID: 8225604069158821224}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: barrel-fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}

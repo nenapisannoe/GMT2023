@@ -25,6 +25,10 @@ public class Character : HitableObject {
         if (_hpBar != null) _hpBar.Initialize(maxHealth);
     }
 
+    public void onEnanle(){
+        if (_hpBar != null) _hpBar.Initialize(maxHealth);            
+    }
+
     public void SetVelocity(Vector2 velocity) {
         moveVector = velocity;
         m_SpriteAnimator.SetBool(IsWalking, velocity != Vector2.zero);

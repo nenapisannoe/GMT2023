@@ -40,6 +40,10 @@ namespace Game.Enemy {
 			Init();
 		}
 
+		public void onEnanle(){
+        	Init();           
+    	}
+
 		public void Init() {
 			m_ReactiveAbilities.Add(ReactiveAbility.Block);
 			m_ReactiveAbilities.Add(ReactiveAbility.StoneBoots);
@@ -48,13 +52,13 @@ namespace Game.Enemy {
 			m_ReactiveAbilities.Add(ReactiveAbility.DodgeCharge);
 
 			if (m_ReactiveAbilities.Contains(ReactiveAbility.Block)) {
-				isPhysicalImmune = true;
+				IsBossMeleeAttackImmune = true;
 			}
 			if (m_ReactiveAbilities.Contains(ReactiveAbility.StoneBoots)) {
 				isKnockable = false;
 			}
 			if (m_ReactiveAbilities.Contains(ReactiveAbility.MagicImmunity)) {
-				isMagicImmune = true;
+				isAbility2Immune = true;
 			}
 			
 			
@@ -67,14 +71,9 @@ namespace Game.Enemy {
 			BaseTask task = new MeleeAttackTask();
 			task.InitTask(this, m_PlayerCharacter, MeleeAttackPrefab);
 			m_AvailableTasks.Add(task);
-			/*
 			task = new RangeAttackTask();
 			task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
 			m_AvailableTasks.Add(task);
-			task = new AreaAttackTask();
-			task.InitTask(this, m_PlayerCharacter, AreaAttackPrefab);
-			m_AvailableTasks.Add(task);
-			*/
 		}
 
 		private void Update() {
@@ -169,14 +168,14 @@ namespace Game.Enemy {
 		}
 
 		private bool isImmune;
-		private bool isPhysicalImmune;
-		private bool isMagicImmune;
+		private bool IsBossMeleeAttackImmune;
+		private bool isAbility2Immune;
 		
 		public override void Hit(Damage damage) {
-			if (isPhysicalImmune && damage.Type == DamageType.Physical) {
+			if (IsBossMeleeAttackImmune && damage.Type == DamageType.BossMeleeAttack) {
 				return;
 			}
-			if (isMagicImmune && damage.Type == DamageType.Magic) {
+			if (isAbility2Immune && damage.Type == DamageType.BossAbility2) {
 				return;
 			}
 			base.Hit(damage);

@@ -6,16 +6,16 @@ using UnityEngine.UI;
 public class gray_out : MonoBehaviour {
 
     public int test;
-    public GameObject border_off;
-    public GameObject border_on;
-    public GameObject border_close;
-    public GameObject border_selected;
+    public GameObject border_off = null;
+    public GameObject border_on = null;
+    public GameObject border_close = null;
+    public GameObject border_selected = null;
     public int status = -1; // 0 dark; 1 gray; 2 white
 
 
     // Use this for initialization
     void Start () {
-        border_on?.SetActive(false);
+        //border_on?.SetActive(false);
         border_off?.SetActive(true);
 	}
 	
@@ -32,10 +32,11 @@ public class gray_out : MonoBehaviour {
 
     public void GrayOut()
     {
+        //Debug.Log("Gray Out");
         Set_gray(0.5f);
         border_off?.SetActive(true);
-        border_on?.SetActive(false);
-        border_close?.SetActive(false);
+        //border_on?.SetActive(false);
+        //border_close?.SetActive(false);
 
         status = 1;
     }
@@ -56,8 +57,8 @@ public class gray_out : MonoBehaviour {
     {
         Set_gray(0.2f);
         border_off?.SetActive(false);
-        border_on?.SetActive(false);
-        border_close?.SetActive(true);
+        //border_on?.SetActive(false);
+        //border_close?.SetActive(true);
         status = 0;
     }
 
@@ -65,15 +66,15 @@ public class gray_out : MonoBehaviour {
     {
         Set_gray(1);
         border_off?.SetActive(false);
-        border_on?.SetActive(true);
-        border_close?.SetActive(false);
-        border_selected?.SetActive(true);
+        //border_on?.SetActive(true);
+        //border_close?.SetActive(false);
+        //border_selected?.SetActive(true);
         status = 2;
     }
 
     public void UnSelect()
     {
-        border_selected?.SetActive(false);
+        //border_selected?.SetActive(false);
     }
 
 

@@ -9,7 +9,8 @@ namespace Game.Enemy {
 		public override bool CanExecuteTask() {
 			if (target is Character character) {
 				if (character.isInWater) {
-					return false;
+					var dist2 = GetDistance(executor.transform.position, target.transform.position);
+					return dist2 > 5.5d;
 				}
 			}
 			var dist = GetDistance(executor.transform.position, target.transform.position);

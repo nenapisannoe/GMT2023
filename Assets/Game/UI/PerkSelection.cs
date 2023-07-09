@@ -16,7 +16,6 @@ public class PerkSelection : MonoBehaviour
     public TextMeshProUGUI skillDescr1;
     public TextMeshProUGUI skillDescr2;
     public Image skillIcon;
-    public Image progressBar;
     public Sprite defIcon;
     public float currentExp = 0.25f;
     public int lvl = 1;
@@ -29,30 +28,49 @@ public class PerkSelection : MonoBehaviour
     public Image levelInd;
     public Sprite[] LevelIndSpr;
 
+    public bool[] unlockedPerks = new bool[11];
+    private int lastUnlocked = 10;
+
+
     // Start is called before the first frame update
     private void Start()
     {
-        foreach (Perk perk in perks)
-        {
-            if (perk.skillObj!=null)
-            {
-                perk.skillButton = perk.skillObj.GetComponent<gray_out>();
-                perk.sprite = perk.skillObj.GetComponent<Image>().sprite;
-                
-            }
-        }
+        ShowPerk();
     }
 
-    
+    public void UnlockNewPerk(int inp)
+    {
+        unlockedPerks[inp]= true;
+        lastUnlocked = inp;
+        skillName.text = perks[inp].title;
+        skillDescr1.text = perks[inp].descr1;
+
+
+    }
+
+    public void ShowPerk()
+    {
+        for (int i = 0; i < perks.Length; i++)
+        {
+            perks[i].skillButton.gameObject.SetActive(unlockedPerks[i]);
+            perks[i].bigSkillButton.gameObject.SetActive(false);
+        }
+        perks[lastUnlocked].bigSkillButton.gameObject.SetActive(true);
+        perks[lastUnlocked].bigSkillButton.WhiteOut();
+
+        MainButtonClicked(lastUnlocked);
+
+    }
 
     void OnEnable()
     {
+        /*
         skillIcon.sprite = defIcon;
         skillName.text = "";
         skillDescr1.text = "";
         skillDescr2.text = "";
         t = 0.666f;
-        
+        */
     }
 
 
@@ -60,107 +78,48 @@ public class PerkSelection : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        t += Time.deltaTime;
-        if (t>=0.66f)
-        {
 
-            t = 0;
-            if (lastPressed>-1)
-            {
-                //perks[lastPressed].effectObject.RefreshDescr();
-                skillName.text = perks[lastPressed].title;
-                skillDescr1.text = perks[lastPressed].descr1;
-                skillDescr2.text = perks[lastPressed].descr2;
-            }
-        }
     }
 
-    public void ExpChange(float inp)
-    {
-        currentExp += inp;
-        CalcLevel();
-    }
-
-    private void CalcLevel()
-    {
-        int i = 0;
-        while (i < expThreshold.Length && expThreshold[i] <= currentExp)
-        {
-            i++;
-        }
-        lvl = i;
-        levelInd.sprite = LevelIndSpr[lvl];
-        progressBar.fillAmount = currentExp;
-        for (i = 0; i < lvl * perkPerLvl; i++)
-        {
-            if (!perks[i].isEmpty)
-            {
-                perks[i].skillButton.GrayOutGentle();
-            }
-        }
-
-        // dark out all rest
-        for (i = lvl * perkPerLvl; i < perks.Length; i++)
-        {
-            if (!perks[i].isEmpty)
-            {
-                perks[i].skillButton.DarkOutGentle();
-            }
-        }
-        //mb name goes here also
-        lvlName.text = lvlDescr[lvl];
-    }
 
     public void ButtonClicked(int inp)
     {
-        if (inp < lvl * perkPerLvl)
+        //Debug.Log(inp);
+        //Debug.Log($"Length: {perks.Length}");
+
+        if (lastPressed >= 0)
         {
+            perks[lastPressed].skillButton.UnSelect();
+        }
 
-            if (lastPressed >=0)
-            {
-                perks[lastPressed].skillButton.UnSelect();
-            }
+        lastPressed = inp;
 
-            lastPressed = inp;
-
-            // mb do this only once
-
-
-            perks[inp].isActive = true;
-
-            int btm = (inp / perkPerLvl) * perkPerLvl;
-            int top = btm + perkPerLvl - 1;
-
-            for (int i = btm; i<=top; i++)
-            {
-                if (i != inp)
-                {
-                    if (!perks[i].isEmpty)
-                    {
-                        perks[i].skillButton.GrayOut();
-                        perks[i].isActive = false;
-                    }
-                }
-            }
-            perks[inp].skillButton.WhiteOut();
-
-
-
-
-
-            //skillIcon.sprite = perks[inp].sprite;
-            skillName.text = perks[inp].title;
-            skillDescr1.text = perks[inp].descr1;
-            //skillDescr2.text = perks[inp].descr2;
-
+        for (int i = 0; i < perks.Length; i++)
+        {
+            //Debug.Log($"i: {i}");
+            perks[i].skillButton.GrayOut();
+            perks[i].bigSkillButton.GrayOut();
 
         }
+        perks[inp].skillButton.WhiteOut();
+
+
+
+
+
+        //skillIcon.sprite = perks[inp].sprite;
+        skillName.text = perks[inp].title;
+        skillDescr1.text = perks[inp].descr1;
+        //skillDescr2.text = perks[inp].descr2;
+
+
     }
 
     public void MainButtonClicked(int inp)
     {
         ButtonClicked(inp);
-
+        perks[inp].skillButton.GrayOut();
+        perks[inp].bigSkillButton.WhiteOut();
     }
 
     //public void 
@@ -181,6 +140,7 @@ public class Perk
     public bool isEmpty = false;
     public Sprite sprite;
     public gray_out skillButton;
+    public gray_out bigSkillButton;
 
 
 
