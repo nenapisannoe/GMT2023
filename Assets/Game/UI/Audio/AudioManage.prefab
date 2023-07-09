@@ -31,7 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7484198513041145527
 MonoBehaviour:
@@ -187,6 +187,56 @@ MonoBehaviour:
     volume: 0.75
     volumeVariance: 0.1
     pitch: 1
+    pitchVariance: 0.1
+    loop: 0
+    adaptive: 0
+    adaptCount: 0
+    mixerGroup: {fileID: 0}
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 6febd42214a20994f809276ccf78bdde, type: 3}
+    volume: 0.75
+    volumeVariance: 0.1
+    pitch: 1
+    pitchVariance: 0.1
+    loop: 0
+    adaptive: 0
+    adaptCount: 0
+    mixerGroup: {fileID: 0}
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: f5a8839b31527d14795031562f58feb8, type: 3}
+    volume: 0.75
+    volumeVariance: 0.1
+    pitch: 1
+    pitchVariance: 0.1
+    loop: 0
+    adaptive: 0
+    adaptCount: 0
+    mixerGroup: {fileID: 0}
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 9f975b1e58c574244854756bb79c5569, type: 3}
+    volume: 0.124
+    volumeVariance: 0.1
+    pitch: 1
+    pitchVariance: 0.1
+    loop: 0
+    adaptive: 0
+    adaptCount: 0
+    mixerGroup: {fileID: 0}
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 0f00d97dfe441204c904e1df6edbc11b, type: 3}
+    volume: 0.426
+    volumeVariance: 0.1
+    pitch: 1
+    pitchVariance: 0.1
+    loop: 0
+    adaptive: 0
+    adaptCount: 0
+    mixerGroup: {fileID: 0}
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 531155c8dab866a4f882c554cf8b7c04, type: 3}
+    volume: 0.011
+    volumeVariance: 0.1
+    pitch: 2
     pitchVariance: 0.1
     loop: 0
     adaptive: 0
