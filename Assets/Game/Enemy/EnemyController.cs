@@ -228,7 +228,7 @@ namespace Game.Enemy {
 			}
 			base.Hit(damage);
 			attackHistory.Add(damage);
-			if ((ChestsStorage.active_chests.Count > 0) && (currentHealth <= 50)){
+			if (chestOpeningEnabled && (ChestsStorage.active_chests.Count > 0) && (currentHealth <= 50)){
 				ApproachTask.InitTask(this, ChestsStorage.active_chests[0], null);
 			}
 		}
