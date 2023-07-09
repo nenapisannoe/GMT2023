@@ -1,3 +1,4 @@
+using Game.PlayerAttacks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,6 +17,8 @@ namespace Game {
 		private float moveSpeed = 5f;
 		private Vector2 moveInput;
 		private Vector2 mouseInput;
+
+		private AttackHandle currentAttackhandle;
 
 		private void OnMove(InputValue input) {
 			moveInput = input.Get<Vector2>();
@@ -49,10 +52,33 @@ namespace Game {
 			MakeBasicAttack(Ability3Prefab, pos);
 		}
 		
+		
 		private void OnAbility4(InputValue input) {
-			var pos = Camera.main.ScreenToWorldPoint(mouseInput);
-			SetVelocity(Vector2.zero);
-			MakeBasicAttack(Ability4Prefab, pos);
+			if (input.isPressed) {
+				var pos = Camera.main.ScreenToWorldPoint(mouseInput);
+				SetVelocity(Vector2.zero);
+				currentAttackhandle = MakeChannelingAttack(Ability4Prefab, pos);
+			}
+			else {
+				(currentAttackhandle.Attack as ChannelingAttack).ChannelComplete();
+				currentAttackhandle = null;
+			}
+		}
+
+		private AttackHandle MakeChannelingAttack(AttackBase attackPrefab, Vector2 target) {
+			if (actionsLocked) {
+				return null;
+			}
+			actionsLocked = true;
+			var handle = AttackManager.Instance.MakeAttack(this, attackPrefab, target);
+			handle.OnComplete += MakeChannelingAttackComplete;
+			handle.OnRemoveLock += UnlockActions;
+			return handle;
+		}
+		
+		private void MakeChannelingAttackComplete(AttackHandle handle) {
+			handle.OnRemoveLock -= UnlockActions;
+			handle.OnComplete -= MakeChannelingAttackComplete;
 		}
 
 		private void FixedUpdate() {

@@ -22,7 +22,7 @@ namespace Game {
 		public virtual bool HaveKnockback { get; }
 
 		[SerializeField] protected Animator m_Animator;
-		[SerializeField] private Collider2D m_Collider;
+		[SerializeField] protected Collider2D m_Collider;
 		private static readonly int Play = Animator.StringToHash("Play");
 		protected static readonly int End = Animator.StringToHash("End");
 
@@ -39,8 +39,13 @@ namespace Game {
 
 		public void InitAttack(Damage damage) {
 			attackDamage = damage;
+			ResetAttackedTargets();
+		}
+
+		protected void ResetAttackedTargets() {
+			attackedTargets.Clear();
 			//чтобы себя не жухать
-			attackedTargets.Add(damage.Attacker);
+			attackedTargets.Add(attackDamage.Attacker);
 		}
 
 		public abstract Vector2 CheckPosition(Vector2 mousePos, Vector2 characterPos);

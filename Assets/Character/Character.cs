@@ -30,9 +30,6 @@ public class Character : HitableObject {
         m_SpriteAnimator.SetBool(IsWalking, velocity != Vector2.zero);
         m_SpriteAnimator.SetFloat(Vertical, velocity.y);
         transform.localScale = velocity.x < 0 ? new Vector3(-1f, 1f, 1f) : new Vector3(1f, 1f, 1f);
-        if (this is PlayerController) {
-            Debug.Log(m_Rigidbody.velocity);
-        }
     }
 
     public void SetCharge(bool value) {
@@ -49,7 +46,7 @@ public class Character : HitableObject {
         handle.OnRemoveLock += UnlockActions;
     }
 
-    private void UnlockActions() {
+    protected void UnlockActions() {
         actionsLocked = false;
     }
 

@@ -260,7 +260,7 @@ MonoBehaviour:
   Ability1Prefab: {fileID: 2103604792518421408, guid: 6076451c300c5d34490355ffe6919d02, type: 3}
   Ability2Prefab: {fileID: 2353485949457271487, guid: ffacb647b6f88964e9b9e7c02a4a2954, type: 3}
   Ability3Prefab: {fileID: 8792960989708503493, guid: 04f6db044d251834cb0630c43cae0e75, type: 3}
-  Ability4Prefab: {fileID: 3177475654817738525, guid: 447e05014830b634cb2d02ab2296fe72, type: 3}
+  Ability4Prefab: {fileID: 8713937955532738786, guid: 787fc25a445e60b48a69b005466d7d8b, type: 3}
 --- !u!114 &8776816039795106336
 MonoBehaviour:
   m_ObjectHideFlags: 0

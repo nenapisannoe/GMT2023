@@ -6,7 +6,8 @@ using UnityEngine.UIElements;
 namespace Game {
 
 	public class AttackHandle {
-		
+
+		public AttackBase Attack;
 		public event Action OnRemoveLock = delegate {};
 		public event Action<AttackHandle> OnComplete = delegate {};
 
@@ -45,17 +46,20 @@ namespace Game {
 			var angle = Mathf.Atan2(targetPosition.y, targetPosition.x) * Mathf.Rad2Deg;
 			attack.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
 			var handle = new AttackHandle();
-			WaitAttackComplete(handle, attack);
+			handle.Attack = attack;
+			WaitAttackComplete(handle);
 			return handle;
 		}
 
-		private async void WaitAttackComplete(AttackHandle handle, AttackBase attack) {
+		private async void WaitAttackComplete(AttackHandle handle) {
+			var attack = handle.Attack;
 			attack.OnRemoveLock += handle.RemoveLock;
 			attack.OnAttackTarget += ApplyAttack;
 			await attack.Run();
 			attack.OnRemoveLock -= handle.RemoveLock;
 			attack.OnAttackTarget -= ApplyAttack;
 			handle.Complete();
+			handle.Attack = null;
 			Destroy(attack.gameObject);
 		}
 
