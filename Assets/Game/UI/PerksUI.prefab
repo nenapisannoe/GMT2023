@@ -520,7 +520,7 @@ MonoBehaviour:
     skillButton: {fileID: 455118944170410793}
     bigSkillButton: {fileID: 634780618314490582}
   - title: Dodge Roll
-    descr1: The Rogue will now dodge your heavy attacks
+    descr1: The Rogue will now dodge your heavy attacks but not in the water
     descr2: 
     skillObj: {fileID: 0}
     isActive: 0
