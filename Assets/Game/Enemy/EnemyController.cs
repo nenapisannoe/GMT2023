@@ -16,7 +16,7 @@ namespace Game.Enemy {
 		MagicImmunity,
 		DodgeCharge,
 		AvoidWater,
-		AvoidMagma,
+		ImmunityMagma,
 		ShootBarrels
 	}
 	
@@ -50,6 +50,8 @@ namespace Game.Enemy {
 		private bool regenActive;
 		private bool regenInterrupted;
 
+		public bool AvoidsWater;
+
 		private void Awake() {
 			sutunEffet.SetActive(false);
 			Init();
@@ -70,7 +72,12 @@ namespace Game.Enemy {
 			if (m_ReactiveAbilities.Contains(ReactiveAbility.MagicImmunity)) {
 				isAbility2Immune = true;
 			}
-			
+			if (m_ReactiveAbilities.Contains(ReactiveAbility.AvoidWater)) {
+				AvoidsWater = true;
+			}
+			if (m_ReactiveAbilities.Contains(ReactiveAbility.ImmunityMagma)) {
+				isBossMagmaImmune = true;
+			}
 			
 			ApproachTask.InitTask(this, m_PlayerCharacter, null);
 			BaseTask open_chest_task = new ChestOpeningTask();
@@ -79,10 +86,6 @@ namespace Game.Enemy {
 			
 			BaseTask task = new MeleeAttackTask();
 			task.InitTask(this, m_PlayerCharacter, MeleeAttackPrefab);
-			m_AvailableTasks.Add(task);
-			
-			task = new RangeAttackTask();
-			task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
 			m_AvailableTasks.Add(task);
 		}
 
@@ -206,12 +209,16 @@ namespace Game.Enemy {
 		private bool isImmune;
 		private bool IsBossMeleeAttackImmune;
 		private bool isAbility2Immune;
+		private bool isBossMagmaImmune;
 		
 		public override void Hit(Damage damage) {
 			if (IsBossMeleeAttackImmune && damage.Type == DamageType.BossMeleeAttack) {
 				return;
 			}
 			if (isAbility2Immune && damage.Type == DamageType.BossAbility2) {
+				return;
+			}
+			if (isBossMagmaImmune && damage.Type == DamageType.Magma) {
 				return;
 			}
 			base.Hit(damage);
