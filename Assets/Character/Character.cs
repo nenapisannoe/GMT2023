@@ -26,7 +26,7 @@ public class Character : HitableObject {
     }
 
     public void SetVelocity(Vector2 velocity) {
-        m_Rigidbody.velocity = velocity;
+        moveVector = velocity;
         m_SpriteAnimator.SetBool(IsWalking, velocity != Vector2.zero);
         m_SpriteAnimator.SetFloat(Vertical, velocity.y);
         transform.localScale = velocity.x < 0 ? new Vector3(-1f, 1f, 1f) : new Vector3(1f, 1f, 1f);
@@ -46,13 +46,15 @@ public class Character : HitableObject {
         handle.OnRemoveLock += UnlockActions;
     }
 
-    protected void UnlockActions() {
-        actionsLocked = false;
-    }
-
     private void MakeBasicAttackComplete(AttackHandle handle) {
         handle.OnRemoveLock -= UnlockActions;
         handle.OnComplete -= MakeBasicAttackComplete;
+    }
+
+    public void Heal(float healValue){
+        currentHealth += healValue;
+        if (_hpBar != null) _hpBar.UpdateHealthBar(currentHealth);
+
     }
     
     public virtual void Hit(Damage damage) {

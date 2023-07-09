@@ -7,6 +7,12 @@ namespace Game.Enemy {
 		protected override int m_Cooldown => 0;
 		
 		public override bool CanExecuteTask() {
+			if (target is Character character) {
+				if (character.isInWater) {
+					var dist2 = GetDistance(executor.transform.position, target.transform.position);
+					return dist2 > 5.5d;
+				}
+			}
 			var dist = GetDistance(executor.transform.position, target.transform.position);
 			return dist > 1d;
 		}

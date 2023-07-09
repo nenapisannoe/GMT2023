@@ -23,7 +23,7 @@ namespace Game {
         private IEnumerator DamageCharacter(HitableObject target) {
             while (true) {
                 target.attakMe(new Damage {
-                    Type = DamageType.Fire,
+                    Type = DamageType.Magma,
                     Value = lavadDamage
                 });
                 yield return new WaitForSeconds(frequency);

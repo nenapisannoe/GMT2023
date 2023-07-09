@@ -262,6 +262,11 @@ MonoBehaviour:
   Ability2Prefab: {fileID: 2353485949457271487, guid: ffacb647b6f88964e9b9e7c02a4a2954, type: 3}
   Ability3Prefab: {fileID: 8792960989708503493, guid: 04f6db044d251834cb0630c43cae0e75, type: 3}
   Ability4Prefab: {fileID: 8713937955532738786, guid: 787fc25a445e60b48a69b005466d7d8b, type: 3}
+  BasicAttackCooldown: 0
+  Ability1Cooldown: 1
+  Ability2Cooldown: 5
+  Ability3Cooldown: 3
+  Ability4Cooldown: 4
 --- !u!114 &8776816039795106336
 MonoBehaviour:
   m_ObjectHideFlags: 0

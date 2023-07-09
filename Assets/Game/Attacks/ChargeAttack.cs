@@ -10,7 +10,7 @@ namespace Game.PlayerAttacks {
 		
 		public float ChargeDuration = 1f;
 		public float ChargeSpeed = 100f;
-		private Vector2 cachePos;
+		public Vector2 CachePos;
 		
 		public override async UniTask Run() {
 			var task = base.Run();
@@ -19,7 +19,7 @@ namespace Game.PlayerAttacks {
 		}
 
 		private async UniTask ChargeCharacter(Character attacker) {
-			var vel = cachePos * ChargeSpeed;
+			var vel = CachePos * ChargeSpeed;
 			attacker.SetVelocity(vel);
 			attacker.SetCharge(true);
 			m_RigidBody.velocity = vel;
@@ -33,8 +33,8 @@ namespace Game.PlayerAttacks {
 
 		public override Vector2 CheckPosition(Vector2 mousePos, Vector2 characterPos) {
 			var newPos = mousePos - characterPos;
-			cachePos = newPos.normalized;
-			return cachePos * 0.25f;
+			CachePos = newPos.normalized;
+			return CachePos * 0.25f;
 		}
 		
 	}

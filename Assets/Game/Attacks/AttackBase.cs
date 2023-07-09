@@ -6,8 +6,15 @@ using UnityEngine;
 namespace Game {
 	
 	public enum DamageType {
-		Physical,
-		Fire
+		BossMeleeAttack,
+		BossAbility1,
+		BossAbility2,
+		BossAbility3,
+		BossAbility4,
+		HeroAbility1,
+		HeroAbility2,
+		BarrelExplosion,
+		Magma
 	}
 
 	public class Damage {
@@ -33,7 +40,7 @@ namespace Game {
 		public event Action OnRemoveLock = delegate {};
 		public event Action<AttackBase, HitableObject, Damage> OnAttackTarget = delegate {};
 
-		protected Damage attackDamage;
+		public Damage attackDamage;
 		
 		private void Awake() {
 			m_Collider.enabled = false;
