@@ -35,7 +35,9 @@ namespace Game.Enemy {
 		[SerializeField] private GameObject SpecialRegenPrefab;
 
 		private bool rangeAttackEnabled = false;
-
+		private bool regenEnabled = false;
+		private bool chestOpeningEnabled = false;
+		
 		public List<ReactiveAbility> m_ReactiveAbilities = new List<ReactiveAbility>();
 		private List<BaseTask> m_AvailableTasks = new List<BaseTask>();
 		private BaseTask ActiveTask;
@@ -63,6 +65,9 @@ namespace Game.Enemy {
 		public void OnEnable(){
 			base.OnEnable();
 			sutunEffet.SetActive(false);
+			BaseTask task = new MeleeAttackTask();
+			task.InitTask(this, m_PlayerCharacter, MeleeAttackPrefab);
+			m_AvailableTasks.Add(task);
         	Init();           
     	}
 
@@ -82,20 +87,7 @@ namespace Game.Enemy {
 			if (m_ReactiveAbilities.Contains(ReactiveAbility.ImmunityMagma)) {
 				isBossMagmaImmune = true;
 			}
-			
-			ApproachTask.InitTask(this, m_PlayerCharacter, null);
-			BaseTask open_chest_task = new ChestOpeningTask();
-			open_chest_task.InitTask(this, null, null);
-			m_AvailableTasks.Add(open_chest_task);
-			
-			BaseTask task = new MeleeAttackTask();
-			task.InitTask(this, m_PlayerCharacter, MeleeAttackPrefab);
-			m_AvailableTasks.Add(task);
-			
-			task = new RangeAttackTask();
-			task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
-			m_AvailableTasks.Add(task);
-			rangeAttackEnabled = true;
+
 		}
 
 		private void Update() {
@@ -406,19 +398,21 @@ namespace Game.Enemy {
 			int perkValue = -1;
 
 				var keyOfMaxValue = attackTypes.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
-				if (roundCount == 4)
+				if (roundCount == 4 && !regenEnabled)
 				{
 					//todo: regen
 					BaseTask task = new RegenTask();
 					task = new RegenTask();
 					task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
 					m_AvailableTasks.Add(task);
+					regenEnabled = true;
 				}
-				if (roundCount == 6)
+				if (roundCount == 6 && !chestOpeningEnabled)
 				{
 					BaseTask task = new ChestOpeningTask();
 					task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
 					m_AvailableTasks.Add(task);
+					chestOpeningEnabled = true;
 				}
 				else if (attackTypes.ContainsKey(DamageType.BossAbility1) &&
 				    attackTypes.ContainsKey(DamageType.BossAbility3) &&
