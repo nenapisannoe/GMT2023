@@ -75,6 +75,9 @@ namespace Game {
 			if (attack.HaveKnockback) {
 				target.Knockback(attackDamage.Attacker.transform);
 			}
+			if (target is EnemyController player) {
+				EnemyController.HitNotify(attack.attackDamage.Attacker, attack);
+			}
 		}
 		
 	}
