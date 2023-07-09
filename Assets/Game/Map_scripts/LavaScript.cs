@@ -7,20 +7,20 @@ namespace Game {
         public float frequency = 2;
         public float lavadDamage = 2;
         private void OnTriggerEnter2D(Collider2D other) {
-            var target = other.gameObject.GetComponent<Character>();
+            var target = other.gameObject.GetComponent<HitableObject>();
             if (target != null){
                 StartCoroutine(DamageCharacter(target));
             }
         }
 
         private void OnTriggerExit2D(Collider2D other) {
-            var target = other.gameObject.GetComponent<Character>();
+            var target = other.gameObject.GetComponent<HitableObject>();
             if (target != null){
                 StopAllCoroutines();
             }
         }
 
-        private IEnumerator DamageCharacter(Character target) {
+        private IEnumerator DamageCharacter(HitableObject target) {
             while (true) {
                 target.attakMe(new Damage {
                     Type = DamageType.Fire,
