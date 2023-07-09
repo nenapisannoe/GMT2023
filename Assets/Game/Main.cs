@@ -6,9 +6,10 @@ namespace Game {
 	public class Main : MonoBehaviour {
 
 		public static Main instance;
-
+		public PerkSelection selection;
 
 		public GameObject skillScreen;
+		public GameObject gameOverScreen;
 
 		private void Awake() {
 			Debug.Log("[MAIN AWAKE]");
@@ -19,17 +20,28 @@ namespace Game {
 			Debug.Log("[MAIN START]");
 		}
 
-		public void showSkillScreen(){
+		public void showSkillScreen(int skillId){
 			skillScreen.SetActive(true);
+			selection.UnlockNewPerk(skillId);
+			selection.ShowPerk();
+		}
+
+		public void showGameOverScreen(){
+			gameOverScreen.SetActive(true);
 		}
 
 		public void enableAll(){
 			InicalizeManager.enableAll();
 		}
 
-		public void resetLevel(){
+		public void resetLevel(int skillId){
 			InicalizeManager.disableAll();
-			showSkillScreen();
+			if (skillId != -1){
+				showSkillScreen(skillId);
+			}else{
+				showGameOverScreen();
+			}
+			
 		}
 
 		public static int GetEpochTime() {

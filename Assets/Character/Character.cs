@@ -87,7 +87,7 @@ public class Character : HitableObject {
         {
             Debug.Log($"Attack: {damage.Type}, Damage: {damage.Value}");
         }*/
-        Main.instance.resetLevel();	
+        Main.instance.resetLevel(-1);	
         Debug.Log($"{this} is now dead");
     }
 
