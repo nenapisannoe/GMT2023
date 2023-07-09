@@ -5,13 +5,21 @@ namespace Game {
     public class ChestContriller :HitableObject
     {
         public Sprite ContaminatedSprite;
+        public Sprite BaseSprite;
         public void Start(){
             ChestsStorage.active_chests.Add(this);
         }
 
         public bool isDanger = false;
 
-        public void onEnanle(){
+        public void Awake(){
+            base.Awake();
+        }
+
+        public void OnEnable(){ 
+            base.OnEnable();
+            isDanger = false;
+            //gameObject.GetComponent<SpriteRenderer>().sprite = BaseSprite;
         	ChestsStorage.active_chests.Add(this);         
     	}
 

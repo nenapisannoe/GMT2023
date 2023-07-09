@@ -9,6 +9,7 @@ namespace Game {
         public int explosionDamge;
 
         public void Awake(){
+            base.Awake();
             explosionPerfab.damage = explosionDamge;
         }
 
@@ -16,8 +17,8 @@ namespace Game {
             BarrelsStorage.active_barrels.Add(this);
         }
 
-        public void onEnanle(){
-            
+        public void OnEnable(){
+            base.OnEnable();
         }
 
 

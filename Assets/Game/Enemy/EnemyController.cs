@@ -51,11 +51,13 @@ namespace Game.Enemy {
 		private bool regenInterrupted;
 
 		private void Awake() {
+			base.Awake();
 			sutunEffet.SetActive(false);
 			Init();
 		}
 
-		public void onEnanle(){
+		public void OnEnable(){
+			base.OnEnable();
 			sutunEffet.SetActive(false);
         	Init();           
     	}
@@ -301,9 +303,8 @@ namespace Game.Enemy {
 
 		protected override void Die()
 		{
-			base.Die();
 			Analyse();
-			Main.instance.resetLevel();			
+			base.Die();		
 		}
 
 		void Analyse()

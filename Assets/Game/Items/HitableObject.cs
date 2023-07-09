@@ -21,7 +21,9 @@ namespace Game {
             initialposition = gameObject.transform.position;
         }
 
-        public void onEnanle(){
+        public void OnEnable(){
+            Debug.Log("On enable");
+            Debug.Log(this);
             gameObject.transform.position = initialposition;
             actionsLocked = false;
             isStunned = false;

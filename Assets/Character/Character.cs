@@ -18,14 +18,18 @@ public class Character : HitableObject {
     [SerializeField] protected MicroBar _hpBar;
 
 
-
+    public void Awake(){
+        base.Awake();
+    }
 
     private void Start()
     {
         if (_hpBar != null) _hpBar.Initialize(maxHealth);
     }
 
-    public void onEnanle(){
+    public void OnEnable(){
+        base.OnEnable();
+        currentHealth = maxHealth;
         if (_hpBar != null) _hpBar.Initialize(maxHealth);            
     }
 
@@ -83,6 +87,7 @@ public class Character : HitableObject {
         {
             Debug.Log($"Attack: {damage.Type}, Damage: {damage.Value}");
         }*/
+        Main.instance.resetLevel();	
         Debug.Log($"{this} is now dead");
     }
 

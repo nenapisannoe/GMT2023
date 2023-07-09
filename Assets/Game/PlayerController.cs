@@ -55,12 +55,15 @@ namespace Game {
 			}
 		}
 
-		public void onEnanle(){
+		public void OnEnable(){
+			base.OnEnable();
         	BasicAttackLast_use = 0;
 			Ability1CoolLast_use = 0;
 			Ability2CoolLast_use = 0;
 			Ability3CoolLast_use = 0;
-			Ability4CoolLast_use = 0;         
+			Ability4CoolLast_use = 0;
+
+
     	}
 		
 		private void OnAbility1(InputValue input) {
@@ -147,6 +150,8 @@ namespace Game {
 				channelingAttack.InterruptChannel();
 			}
 		}
+
+		
 
 	}
 	
