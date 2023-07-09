@@ -182,6 +182,7 @@ MonoBehaviour:
   m_Collider: {fileID: 7194026045952397832}
   damageType: 5
   damage: 5
+  Damage: 5
 --- !u!95 &1157228983122022667
 Animator:
   serializedVersion: 5

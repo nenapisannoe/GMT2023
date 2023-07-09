@@ -10,7 +10,7 @@ namespace Game {
 
         public void Awake(){
             base.Awake();
-            explosionPerfab.damage = explosionDamge;
+            
         }
 
         private void Start() {
@@ -25,7 +25,7 @@ namespace Game {
         public override void attakMe(Damage attackDamage){
             if (attackDamage.Type is DamageType.BossAbility2 or DamageType.HeroAbility2){
                 Debug.Log("I Exploded");
-                AttackManager.Instance.MakeAttack(this, explosionPerfab, this.transform.position);
+                AttackManager.Instance.MakeAttack(this, explosionPerfab, transform.position, explosionDamge);
                 gameObject.SetActive(false);
                 
                 BarrelsStorage.active_barrels.Remove(this);

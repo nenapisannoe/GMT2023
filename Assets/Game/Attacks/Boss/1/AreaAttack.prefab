@@ -134,7 +134,8 @@ MonoBehaviour:
   m_Animator: {fileID: 1157228983122022667}
   m_Collider: {fileID: 4750605599919971620}
   damageType: 1
-  damage: 1
+  damage: 33
+  Damage: 33
 --- !u!95 &1157228983122022667
 Animator:
   serializedVersion: 5
