@@ -313,7 +313,7 @@ namespace Game.Enemy {
 			Main.instance.resetLevel();			
 		}
 
-		void Analyse()
+		int Analyse()
 		{
 			var attackTypes = new Dictionary<DamageType, int>();
 			foreach (var x in attackHistory)
@@ -331,6 +331,7 @@ namespace Game.Enemy {
 						{
 							attackTypes.Add(DamageType.BossMeleeAttack, 1);
 						}
+
 						break;
 					}
 					case DamageType.BossAbility1:
@@ -343,6 +344,7 @@ namespace Game.Enemy {
 						{
 							attackTypes.Add(DamageType.BossAbility1, 1);
 						}
+
 						break;
 					}
 					case DamageType.BossAbility2:
@@ -355,6 +357,7 @@ namespace Game.Enemy {
 						{
 							attackTypes.Add(DamageType.BossAbility2, 1);
 						}
+
 						break;
 					}
 					case DamageType.BossAbility3:
@@ -367,6 +370,7 @@ namespace Game.Enemy {
 						{
 							attackTypes.Add(DamageType.BossAbility3, 1);
 						}
+
 						break;
 					}
 					case DamageType.Magma:
@@ -379,53 +383,80 @@ namespace Game.Enemy {
 						{
 							attackTypes.Add(DamageType.Magma, 1);
 						}
+
 						break;
 					}
 				}
-									
+				
+			}
+			int perkValue = -1;
+
 				var keyOfMaxValue = attackTypes.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
-				if (attackTypes.ContainsKey(DamageType.BossAbility1) && attackTypes.ContainsKey(DamageType.BossAbility3) && attackTypes[DamageType.BossAbility1] + attackTypes[DamageType.BossAbility3] >= attackTypes[keyOfMaxValue] && m_ReactiveAbilities.Contains(ReactiveAbility.Dodge) && !rangeAttackEnabled)
+				if (attackTypes.ContainsKey(DamageType.BossAbility1) &&
+				    attackTypes.ContainsKey(DamageType.BossAbility3) &&
+				    attackTypes[DamageType.BossAbility1] + attackTypes[DamageType.BossAbility3] >=
+				    attackTypes[keyOfMaxValue] && m_ReactiveAbilities.Contains(ReactiveAbility.Dodge) &&
+				    !rangeAttackEnabled)
 				{
 					BaseTask task = new MeleeAttackTask();
 					task = new RangeAttackTask();
 					task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
 					m_AvailableTasks.Add(task);
 					rangeAttackEnabled = true;
-					
+					perkValue = 4;
+
 					//todo: regen
 					task = new RegenTask();
 					task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
 					m_AvailableTasks.Add(task);
 					m_ReactiveAbilities.Add(ReactiveAbility.AvoidWater);
 				}
-				else if (attackTypes.ContainsKey(DamageType.BossAbility1) && attackTypes.ContainsKey(DamageType.BossAbility3) &&attackTypes[DamageType.BossAbility1] + DamageType.BossAbility3 >= keyOfMaxValue && m_ReactiveAbilities.Contains(ReactiveAbility.Dodge) && rangeAttackEnabled)
+				else if (attackTypes.ContainsKey(DamageType.BossAbility1) &&
+				         attackTypes.ContainsKey(DamageType.BossAbility3) &&
+				         attackTypes[DamageType.BossAbility1] + DamageType.BossAbility3 >= keyOfMaxValue &&
+				         m_ReactiveAbilities.Contains(ReactiveAbility.Dodge) && rangeAttackEnabled)
 				{
 					m_ReactiveAbilities.Add(ReactiveAbility.StoneBoots);
+					perkValue = 1;
 				}
-				else if (attackTypes.ContainsKey(DamageType.BossMeleeAttack) && keyOfMaxValue == DamageType.BossMeleeAttack && !m_ReactiveAbilities.Contains(ReactiveAbility.Block))
+				else if (attackTypes.ContainsKey(DamageType.BossMeleeAttack) &&
+				         keyOfMaxValue == DamageType.BossMeleeAttack &&
+				         !m_ReactiveAbilities.Contains(ReactiveAbility.Block))
 				{
 					m_ReactiveAbilities.Add(ReactiveAbility.Block);
+					perkValue = 0;
 				}
-				else if (attackTypes.ContainsKey(DamageType.BossAbility2) && keyOfMaxValue == DamageType.BossAbility2 && !m_ReactiveAbilities.Contains(ReactiveAbility.MagicImmunity))
+				else if (attackTypes.ContainsKey(DamageType.BossAbility2) && keyOfMaxValue == DamageType.BossAbility2 &&
+				         !m_ReactiveAbilities.Contains(ReactiveAbility.MagicImmunity))
 				{
 					m_ReactiveAbilities.Add(ReactiveAbility.MagicImmunity);
+					perkValue = 3;
 				}
-				else if (attackTypes.ContainsKey(DamageType.BossAbility1) && keyOfMaxValue == DamageType.BossAbility1 && !m_ReactiveAbilities.Contains(ReactiveAbility.Dodge) && !m_ReactiveAbilities.Contains(ReactiveAbility.DodgeCharge))
+				else if (attackTypes.ContainsKey(DamageType.BossAbility1) && keyOfMaxValue == DamageType.BossAbility1 &&
+				         !m_ReactiveAbilities.Contains(ReactiveAbility.Dodge) &&
+				         !m_ReactiveAbilities.Contains(ReactiveAbility.DodgeCharge))
 				{
 					m_ReactiveAbilities.Add(ReactiveAbility.Dodge);
 					m_ReactiveAbilities.Add(ReactiveAbility.DodgeCharge);
+					perkValue = 2;
 				}
-				else if (attackTypes.ContainsKey(DamageType.BarrelExplosion) && !m_ReactiveAbilities.Contains(ReactiveAbility.ShootBarrels) && keyOfMaxValue == DamageType.BarrelExplosion)
+				else if (attackTypes.ContainsKey(DamageType.BarrelExplosion) &&
+				         !m_ReactiveAbilities.Contains(ReactiveAbility.ShootBarrels) &&
+				         keyOfMaxValue == DamageType.BarrelExplosion)
 				{
 					m_ReactiveAbilities.Add(ReactiveAbility.ShootBarrels);
+					perkValue = 5;
 				}
-				else if (attackTypes.ContainsKey(DamageType.Magma) && !m_ReactiveAbilities.Contains(ReactiveAbility.ImmunityMagma) && keyOfMaxValue == DamageType.Magma)
+				else if (attackTypes.ContainsKey(DamageType.Magma) &&
+				         !m_ReactiveAbilities.Contains(ReactiveAbility.ImmunityMagma) &&
+				         keyOfMaxValue == DamageType.Magma)
 				{
+					perkValue = 8;
 					m_ReactiveAbilities.Add(ReactiveAbility.ImmunityMagma);
 				}
-			}
+				return perkValue;
 		}
-		
+
 	}
 	
 }
