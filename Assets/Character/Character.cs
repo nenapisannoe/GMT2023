@@ -55,7 +55,7 @@ public class Character : HitableObject {
         handle.OnComplete -= MakeBasicAttackComplete;
     }
     
-    public void Hit(Damage damage) {
+    public virtual void Hit(Damage damage) {
         m_CharacterAnimator.PlayHit();
 
         currentHealth -= damage.Value;
