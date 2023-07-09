@@ -5,7 +5,7 @@ namespace Game.Enemy {
 	
 	public class RangeAttackTask : BaseTask {
 		
-		protected override int m_Cooldown => 10;
+		protected override int m_Cooldown => 2;
 
 		private ExplosiveBarrelController targetedBarrel = null;
 		

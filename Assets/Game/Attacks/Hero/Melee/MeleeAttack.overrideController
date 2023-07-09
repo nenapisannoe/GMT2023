@@ -9,5 +9,5 @@ AnimatorOverrideController:
   m_Name: MeleeAttack
   m_Controller: {fileID: 9100000, guid: 6e152abdd74b1fd45bcc33fa982bba61, type: 2}
   m_Clips:
-  - m_OriginalClip: {fileID: 7400000, guid: 4f8dae10bb83ee441bc333a45fa27ace, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 462b35ac8c3c63849949f4f049fb25d5, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: 20514ebae230f184f92c7ea14fe34fc6, type: 2}

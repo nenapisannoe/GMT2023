@@ -16,8 +16,8 @@ namespace Game.PlayerAttacks {
 			var task = base.Run();
 			await task;
 			await UniTask.WaitUntil(() => canFinishAttack);
-			var endTask = ProjectileEnd();
-			await endTask;
+			//var endTask = ProjectileEnd();
+			//await endTask;
 		}
 		
 		public virtual async UniTask ProjectileEnd() {
