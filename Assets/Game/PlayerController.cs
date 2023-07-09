@@ -22,7 +22,7 @@ namespace Game {
 		[SerializeField] private float Ability3Cooldown;
 		[SerializeField] private float Ability4Cooldown;
 
-		private float moveSpeed = 3f;
+		private float moveSpeed = 2.3f;
 		private Vector2 moveInput;
 		private Vector2 mouseInput;
 
