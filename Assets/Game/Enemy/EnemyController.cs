@@ -384,7 +384,7 @@ namespace Game.Enemy {
 				}
 									
 				var keyOfMaxValue = attackTypes.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
-				if (attackTypes[DamageType.BossAbility1] + attackTypes[DamageType.BossAbility3] >= attackTypes[keyOfMaxValue] && m_ReactiveAbilities.Contains(ReactiveAbility.Dodge) && !rangeAttackEnabled)
+				if (attackTypes.ContainsKey(DamageType.BossAbility1) && attackTypes.ContainsKey(DamageType.BossAbility3) && attackTypes[DamageType.BossAbility1] + attackTypes[DamageType.BossAbility3] >= attackTypes[keyOfMaxValue] && m_ReactiveAbilities.Contains(ReactiveAbility.Dodge) && !rangeAttackEnabled)
 				{
 					BaseTask task = new MeleeAttackTask();
 					task = new RangeAttackTask();
@@ -397,26 +397,26 @@ namespace Game.Enemy {
 					task.InitTask(this, m_PlayerCharacter, RangeAttackPrefab);
 					m_AvailableTasks.Add(task);
 				}
-				else if (attackTypes[DamageType.BossAbility1] + DamageType.BossAbility3 >= keyOfMaxValue && m_ReactiveAbilities.Contains(ReactiveAbility.Dodge) && rangeAttackEnabled)
+				else if (attackTypes.ContainsKey(DamageType.BossAbility1) && attackTypes.ContainsKey(DamageType.BossAbility3) &&attackTypes[DamageType.BossAbility1] + DamageType.BossAbility3 >= keyOfMaxValue && m_ReactiveAbilities.Contains(ReactiveAbility.Dodge) && rangeAttackEnabled)
 				{
 					m_ReactiveAbilities.Add(ReactiveAbility.StoneBoots);
 				}
-				else if (keyOfMaxValue == DamageType.BossMeleeAttack && !m_ReactiveAbilities.Contains(ReactiveAbility.Block))
+				else if (attackTypes.ContainsKey(DamageType.BossMeleeAttack) && keyOfMaxValue == DamageType.BossMeleeAttack && !m_ReactiveAbilities.Contains(ReactiveAbility.Block))
 				{
 					m_ReactiveAbilities.Add(ReactiveAbility.Block);
 				}
-				else if (keyOfMaxValue == DamageType.BossAbility2 && !m_ReactiveAbilities.Contains(ReactiveAbility.MagicImmunity))
+				else if (attackTypes.ContainsKey(DamageType.BossAbility2) && keyOfMaxValue == DamageType.BossAbility2 && !m_ReactiveAbilities.Contains(ReactiveAbility.MagicImmunity))
 				{
 					m_ReactiveAbilities.Add(ReactiveAbility.MagicImmunity);
 				}
-				else if (keyOfMaxValue == DamageType.BossAbility1 && !m_ReactiveAbilities.Contains(ReactiveAbility.Dodge) && !m_ReactiveAbilities.Contains(ReactiveAbility.DodgeCharge))
+				else if (attackTypes.ContainsKey(DamageType.BossAbility1) && keyOfMaxValue == DamageType.BossAbility1 && !m_ReactiveAbilities.Contains(ReactiveAbility.Dodge) && !m_ReactiveAbilities.Contains(ReactiveAbility.DodgeCharge))
 				{
 					m_ReactiveAbilities.Add(ReactiveAbility.Dodge);
 					m_ReactiveAbilities.Add(ReactiveAbility.DodgeCharge);
 				}
-				else if (keyOfMaxValue == DamageType.BarrelExplosion)
+				else if (attackTypes.ContainsKey(DamageType.BarrelExplosion) && !m_ReactiveAbilities.Contains(ReactiveAbility.ShootBarrels) && keyOfMaxValue == DamageType.BarrelExplosion)
 				{
-					//взлом замков
+					m_ReactiveAbilities.Add(ReactiveAbility.ShootBarrels);
 				}
 			}
 		}
