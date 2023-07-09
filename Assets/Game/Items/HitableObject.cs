@@ -8,6 +8,7 @@ namespace Game {
         
         [SerializeField] protected Rigidbody2D m_Rigidbody;
         protected bool actionsLocked;
+        protected bool isStunned;
         
         public abstract void attakMe(Damage attackDamage); // Envoke when object is attaked
 

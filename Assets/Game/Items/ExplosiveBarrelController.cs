@@ -7,8 +7,7 @@ namespace Game {
         public AttackBase explosionPerfab;
         public int explosionDamge;
         public override void attakMe(Damage attackDamage){
-            Debug.Log(attackDamage.Type);
-            if (attackDamage.Type is DamageType.Fire){
+            if ((attackDamage.Type is DamageType.Fire) || (attackDamage.Type is DamageType.Contaminating)){
                 Debug.Log("I Exploded");
                 var attack = Instantiate(explosionPerfab);
                 attack.transform.position = new Vector2(transform.position.x, transform.position.y);
@@ -16,7 +15,7 @@ namespace Game {
 				    Type = DamageType.Fire,
 				    Value = explosionDamge
 			    });
-                Destroy(gameObject, 0.5);
+                Destroy(gameObject, 0.5f);
             }
             
         }

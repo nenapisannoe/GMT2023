@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 namespace Game.Enemy {
 	
@@ -26,6 +27,9 @@ namespace Game.Enemy {
 
 		public void Init() {
 			ApproachTask.InitTask(this, m_PlayerCharacter, null);
+			BaseTask open_chest_task = new ChestOpeningTask();
+			open_chest_task.InitTask(this, null, null);
+			m_AvailableTasks.Add(open_chest_task);
 			
 			/*
 			BaseTask task = new MeleeAttackTask();
@@ -42,6 +46,9 @@ namespace Game.Enemy {
 
 		private void Update() {
 			if (actionsLocked) {
+				return;
+			}
+			if (isStunned) {
 				return;
 			}
 			EnemyTick();
@@ -76,10 +83,15 @@ namespace Game.Enemy {
 				case ExecutorTask.MoveToPosition:
 					RunMoveToPositionTask(task.GetMoveToPositionTaskData());
 					break;
-				
 				case ExecutorTask.AttackTarget:
 					task.RunTask();
 					RunAttackTargetTask(task, task.GetAttackTargetTaskData());
+					task.CompleteTask();
+					ActiveTask = null;
+					break;
+				case ExecutorTask.OpenChest:
+					task.RunTask();
+					RunOpenChestTask(task);
 					task.CompleteTask();
 					ActiveTask = null;
 					break;
@@ -99,6 +111,33 @@ namespace Game.Enemy {
 		private void RunAttackTargetTask(BaseTask task, Vector3 target) {
 			SetVelocity(Vector2.zero);
 			MakeBasicAttack(task.AttackPrefab, target);
+		}
+
+		private async void RunOpenChestTask(BaseTask task) {
+			SetVelocity(Vector2.zero);
+			if (task.target is ChestContriller target_chest) {
+				//Здесь нужно вставить начало анимации открытия
+				await UniTask.Delay(TimeSpan.FromSeconds(2f));
+				//Здесь нужно вставить конец анимации открытия
+
+				if (target_chest.isDanger){
+					isStunned = true;
+					await UniTask.Delay(TimeSpan.FromSeconds(2f));
+					isStunned = false;
+				}else{
+					currentHealth += 10;
+				}
+				target_chest.open();
+				ApproachTask.InitTask(this, m_PlayerCharacter, null);
+			}
+
+		}
+
+		public override void Hit(Damage damage) {
+			base.Hit(damage);
+			if ((ChestsStorage.active_chests.Count > 0) && (currentHealth <= 50)){
+				ApproachTask.InitTask(this, ChestsStorage.active_chests[0], null);
+			}
 		}
 
 	}

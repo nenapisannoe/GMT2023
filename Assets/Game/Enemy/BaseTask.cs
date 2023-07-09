@@ -5,7 +5,8 @@ namespace Game.Enemy {
 	
 	public enum ExecutorTask {
 		MoveToPosition,
-		AttackTarget
+		AttackTarget,
+		OpenChest
 	}
 	
 	public abstract class BaseTask {
@@ -14,11 +15,11 @@ namespace Game.Enemy {
 		protected abstract int m_Cooldown { get; }
 		public bool IsCooldown => Main.GetEpochTime() - lastUseTime < m_Cooldown;
 
-		protected Character executor;
-		protected Character target;
+		public HitableObject executor;
+		public HitableObject target;
 		public AttackBase AttackPrefab;
 
-		public void InitTask(Character executor, Character target, AttackBase attackPrefab) {
+		public void InitTask(HitableObject executor, HitableObject target, AttackBase attackPrefab) {
 			this.executor = executor;
 			this.target = target;
 			AttackPrefab = attackPrefab;
