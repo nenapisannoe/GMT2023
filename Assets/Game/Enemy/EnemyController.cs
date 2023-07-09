@@ -436,6 +436,9 @@ namespace Game.Enemy {
 					m_AvailableTasks.Add(task);
 					rangeAttackEnabled = true;
 					perkValue = 4;
+					if (!m_ReactiveAbilities.Contains(ReactiveAbility.AvoidWater)) {
+						m_ReactiveAbilities.Add(ReactiveAbility.AvoidWater);
+					}
 				}
 				else if(roundCount == 5)
 				{
