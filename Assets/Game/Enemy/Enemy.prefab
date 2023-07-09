@@ -144,7 +144,7 @@ Transform:
   - {fileID: 5364048454102308949}
   - {fileID: 4850322899837012546}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &684796641255591656
 CircleCollider2D:
@@ -178,9 +178,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.5}
+  m_Offset: {x: 0, y: -0.07}
   serializedVersion: 2
-  m_Radius: 0.25
+  m_Radius: 0.68
 --- !u!50 &6763127397276080488
 Rigidbody2D:
   serializedVersion: 4
@@ -237,6 +237,7 @@ MonoBehaviour:
   SpecialRegenPrefab: {fileID: 1906246536484781160, guid: 2c3d615a21002404e993836a098056dc, type: 3}
   m_ReactiveAbilities: 
   sutunEffet: {fileID: 6537243633824497718}
+  roundCount: 0
   AvoidsWater: 0
 --- !u!114 &3919505246402276771
 MonoBehaviour:
