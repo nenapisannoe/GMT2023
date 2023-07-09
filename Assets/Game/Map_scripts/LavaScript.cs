@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Game {
     public class LavaScript : MonoBehaviour
     {
-        public float frequency = 2;
+        public float frequency = 0.5f;
         public float lavadDamage = 2;
         private void OnTriggerEnter2D(Collider2D other) {
             var target = other.gameObject.GetComponent<HitableObject>();

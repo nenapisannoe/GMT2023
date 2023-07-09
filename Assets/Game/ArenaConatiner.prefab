@@ -3349,8 +3349,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b142287b35780e746b9ea1549768b4ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 2
-  lavadDamage: 2
+  frequency: 0.5
+  lavadDamage: 5
 --- !u!1 &1692527723305500453
 GameObject:
   m_ObjectHideFlags: 0
