@@ -44,7 +44,7 @@ namespace Game.Enemy {
 		private BaseTask ActiveTask;
 		private ApproachTask ApproachTask = new ApproachTask();
 		
-		private float moveSpeed = 2f;
+		private float moveSpeed = 1.3f;
 		
 		private List<Damage> attackHistory = new List<Damage>();
 
@@ -229,7 +229,7 @@ namespace Game.Enemy {
 			}
 			base.Hit(damage);
 			attackHistory.Add(damage);
-			if ((ChestsStorage.active_chests.Count > 0) && (currentHealth <= 50)){
+			if (chestOpeningEnabled && (ChestsStorage.active_chests.Count > 0) && (currentHealth <= 50)){
 				ApproachTask.InitTask(this, ChestsStorage.active_chests[0], null);
 			}
 		}

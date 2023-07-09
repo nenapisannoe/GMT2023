@@ -36,12 +36,12 @@ namespace Game {
 			Instance = this;
 		}
 		
-		public AttackHandle MakeAttack(HitableObject attacker, AttackBase attackPrefab, Vector2 targetPosition) {
+		public AttackHandle MakeAttack(HitableObject attacker, AttackBase attackPrefab, Vector2 targetPosition, int overrideDamage = 0) {
 			var attack = Instantiate(attackPrefab);
 			attack.InitAttack(new Damage {
 				Attacker = attacker,
 				Type = attackPrefab.damageType,
-				Value = attackPrefab.damage
+				Value = overrideDamage != 0 ? overrideDamage : attackPrefab.Damage
 			});
 			var characterPosition = attacker.transform.position;
 			targetPosition = attack.CheckPosition(targetPosition, characterPosition);
