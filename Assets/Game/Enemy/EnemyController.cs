@@ -212,6 +212,9 @@ namespace Game.Enemy {
 		private bool isBossMagmaImmune;
 		
 		public override void Hit(Damage damage) {
+			if (forceVector != Vector2.zero) {
+				return;
+			}
 			if (IsBossMeleeAttackImmune && damage.Type == DamageType.BossMeleeAttack) {
 				return;
 			}
@@ -229,7 +232,7 @@ namespace Game.Enemy {
 		}
 
 		public async void Notify(PlayerController player, AttackBase attackPrefab) {
-			if (attackPrefab is AreaAttack) {
+			if (attackPrefab is AreaAttack && !isInWater) {
 				if (m_ReactiveAbilities.Contains(ReactiveAbility.Dodge)) {
 					var dist = BaseTask.GetDistance(transform.position, player.transform.position);
 					if (dist < 3.5d) {
@@ -238,7 +241,7 @@ namespace Game.Enemy {
 				}
 				return;
 			}
-			if (attackPrefab is ChargeAttack charge) {
+			if (attackPrefab is ChargeAttack charge && !isInWater) {
 				if (m_ReactiveAbilities.Contains(ReactiveAbility.DodgeCharge)) {
 					var dist = BaseTask.GetDistance(transform.position, player.transform.position);
 					if (dist < 5d) {
@@ -284,6 +287,8 @@ namespace Game.Enemy {
 		public async void MakeDodge(Transform from) {
 			forceVector = (transform.position - from.position).normalized * 10f;
 			await UniTask.Delay(TimeSpan.FromSeconds(0.2f));
+			forceVector *= 0.1f;
+			await UniTask.Delay(TimeSpan.FromSeconds(0.2f));
 			forceVector = Vector2.zero;
 		}
 
@@ -302,8 +307,9 @@ namespace Game.Enemy {
 				forceVector.x = -Math.Abs(forceVector.x);
 			}
 			await UniTask.Delay(TimeSpan.FromSeconds(0.2f));
+			forceVector *= 0.1f;
+			await UniTask.Delay(TimeSpan.FromSeconds(0.8f));
 			forceVector = Vector2.zero;
-			forceVector = Vector2.Perpendicular(forceVector);
 		}
 
 		protected override void Die()
