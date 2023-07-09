@@ -616,7 +616,7 @@ MonoBehaviour:
   t: 0
   levelInd: {fileID: 0}
   LevelIndSpr: []
-  unlockedPerks: 0101010101010101010100
+  unlockedPerks: 0000000000000000000000
 --- !u!1 &4183973402031596137
 GameObject:
   m_ObjectHideFlags: 0
