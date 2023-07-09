@@ -16,7 +16,7 @@ namespace Game.Enemy {
 		public bool IsCooldown => Main.GetEpochTime() - lastUseTime < m_Cooldown;
 
 		protected EnemyController executor;
-		protected HitableObject target;
+		public HitableObject target;
 		public AttackBase AttackPrefab;
 
 		public void InitTask(EnemyController executor, HitableObject target, AttackBase attackPrefab) {
